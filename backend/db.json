@@ -23,6 +23,14 @@
       "passwordHash": "$2a$10$onxi1oPvSLtPOPC4MWRHHOXoePXTFEwnyCP6uGETWOXcCEs1QIgHK",
       "phone": null,
       "createdAt": "2026-02-24T10:55:41.682Z"
+    },
+    {
+      "id": "c36b0e2a-4afe-4b0c-876c-9c408f1efe02",
+      "name": "namana",
+      "email": "anamab@132gmail.com",
+      "passwordHash": "$2a$10$LOK2/4fgC.eA7fNCmPZRO.0lkx1TCUYOkvQVQP/UCT/zVHPukCR3S",
+      "phone": null,
+      "createdAt": "2026-02-24T15:57:51.600Z"
     }
   ],
   "otps": [
@@ -77,6 +85,53 @@
       "address": "16th cross road",
       "card": "4334",
       "paidAt": "2026-02-24T11:09:01.608Z"
+    },
+    {
+      "orderId": "SLK-FD992U",
+      "backendOrderId": "order_demo_1771948686083",
+      "items": [
+        {
+          "id": 2,
+          "name": "Midnight Velvet",
+          "desc": "Dark Valrhona ganache, espresso layers, hand-crumbled cocoa crust.",
+          "emoji": "🍫",
+          "price": 2199,
+          "tags": [
+            "popular",
+            "chocolate"
+          ],
+          "rating": 4.7,
+          "reviews": 84,
+          "badge": "NEW",
+          "bg": "#f5e8d8",
+          "qty": 2
+        }
+      ],
+      "address": "aamnasnqm",
+      "card": "2345",
+      "paidAt": "2026-02-24T15:58:17.168Z"
+    },
+    {
+      "orderId": "SLK-3TPNZX",
+      "backendOrderId": "order_demo_1771948848793",
+      "items": [
+        {
+          "id": 1771948846706,
+          "name": "Custom Cake",
+          "desc": "1-tier custom design",
+          "emoji": "🎂",
+          "price": 1498,
+          "tags": [
+            "custom"
+          ],
+          "rating": 5,
+          "reviews": 0,
+          "badge": "CUSTOM"
+        }
+      ],
+      "address": "aamnasnqm",
+      "card": "2346",
+      "paidAt": "2026-02-24T16:01:00.062Z"
     }
   ]
 }
