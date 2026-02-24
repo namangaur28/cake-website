@@ -609,6 +609,13 @@
                             maxlength="28" oninput="updateInscription()" />
                     </div>
                     <div class="ctrl-grp">
+                        <div class="ctrl-lbl">Special Instructions</div>
+                        <textarea class="instr-input" id="instructionsInput" rows="3"
+                            placeholder="e.g. Dairy-free frosting, extra sprinkles, no nuts, specific colour theme…"
+                            maxlength="300" oninput="updateInstructions()"></textarea>
+                        <div class="instr-hint">Tell us anything not listed above — we'll do our best! 🎀</div>
+                    </div>
+                    <div class="ctrl-grp">
                         <div class="ctrl-lbl">Topping</div>
                         <div class="topping-row" onclick="toggleTopping()">
                             <div><span class="top-name">Cherry Topper</span><span class="top-price">+Rs.199</span></div>

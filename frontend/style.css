@@ -2564,6 +2564,31 @@ footer {
     border-color: var(--rose)
 }
 
+.instr-input {
+    background: var(--bg2);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    padding: .55rem .8rem;
+    font-size: .8rem;
+    color: var(--text);
+    outline: none;
+    transition: border-color .2s, background var(--tr);
+    width: 100%;
+    font-family: inherit;
+    resize: none;
+    line-height: 1.5
+}
+
+.instr-input:focus {
+    border-color: var(--rose)
+}
+
+.instr-hint {
+    font-size: .67rem;
+    color: var(--muted);
+    line-height: 1.4
+}
+
 .topping-row {
     display: flex;
     align-items: center;

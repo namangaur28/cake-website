@@ -609,7 +609,7 @@ const CAKE_FONTS = [
 let scene, camera, renderer, cakeGroup, animFrame;
 let isDrag = false, lastX = 0, lastY = 0, rotY = 0.3, rotX = 0.1;
 let builderInitted = false;
-const builder = { tiers: 1, layerColors: ['#f48fb1', '#ce93d8', '#80deea'], fontIdx: 0, inscription: '', topping: false };
+const builder = { tiers: 1, layerColors: ['#f48fb1', '#ce93d8', '#80deea'], fontIdx: 0, inscription: '', instructions: '', topping: false };
 
 // AI CHEF BOT REMOVED
 // Original Builder Logic restored
@@ -808,6 +808,10 @@ function renderCtrlPanel() {
     fi.value = builder.inscription;
     fi.style.fontFamily = CAKE_FONTS[builder.fontIdx].family;
 
+    // Special instructions
+    const ii = document.getElementById('instructionsInput');
+    if (ii) ii.value = builder.instructions;
+
     // Topping
     const sw = document.getElementById('toppingSw');
     if (sw) sw.className = 'tog-sw' + (builder.topping ? ' on' : '');
@@ -894,6 +898,10 @@ function updateInscription() {
     buildCakeMesh();
 }
 
+function updateInstructions() {
+    builder.instructions = document.getElementById('instructionsInput').value;
+}
+
 function toggleTopping() {
     builder.topping = !builder.topping;
     buildCakeMesh();
@@ -913,7 +921,8 @@ function updateBuilderPrice() {
 function addBuilderToCart() {
     const base = 1299, tierAdd = 400, cherryAdd = 199;
     const total = base + (builder.tiers - 1) * tierAdd + (builder.topping ? cherryAdd : 0);
-    const custom = { id: Date.now(), name: 'Custom Cake', desc: builder.tiers + '-tier custom design' + (builder.inscription ? ' · "' + builder.inscription + '"' : ''), emoji: '🎂', price: total, tags: ['custom'], rating: 5, reviews: 0, badge: 'CUSTOM' };
+    const instr = builder.instructions ? ' · Notes: ' + builder.instructions : '';
+    const custom = { id: Date.now(), name: 'Custom Cake', desc: builder.tiers + '-tier custom design' + (builder.inscription ? ' · "' + builder.inscription + '"' : '') + instr, emoji: '🎂', price: total, tags: ['custom'], rating: 5, reviews: 0, badge: 'CUSTOM', instructions: builder.instructions };
     cart.push(custom);
     addPoints(30, 'Created a custom cake');
     document.getElementById('cartCount').textContent = cart.length;
