@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In — Silkoven Artisan Cakes</title>
+    <meta name="description"
+        content="Sign in to your Silkoven account to track orders, save favourites and enjoy exclusive perks." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Jost:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ── Variables (mirrors main site) ── */
+        :root {
+            --rose: #c0392b;
+            --bark: #6b3d2e;
+            --gold: #b5883a;
+            --cream: #fdf7f0;
+            --blush: #f0d5c8;
+            --bg: #fdf7f0;
+            --bg2: #f5ece0;
+            --bg3: #ede0cf;
+            --card-bg: #fff;
+            --text: #3a2218;
+            --dark: #1a100a;
+            --muted: #8d6e5a;
+            --border: #e8d5c0;
+            --tr: .3s;
+        }
+
+        [data-theme="dark"] {
+            --bg: #121212;
+            --bg2: #1E1E1E;
+            --bg3: #2C2C2C;
+            --card-bg: #1E1E1E;
+            --text: #E0E0E0;
+            --dark: #FFFFFF;
+            --muted: #B0B0B0;
+            --border: #333333;
+            --cream: #121212;
+            --blush: #2C2C2C;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background var(--tr), color var(--tr);
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: 'Jost', sans-serif;
+            cursor: pointer;
+            border: none;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* ── Navbar ── */
+        .login-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: .9rem 2.5rem;
+            background: rgba(253, 247, 240, .88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background var(--tr);
+        }
+
+        [data-theme="dark"] .login-nav {
+            background: rgba(18, 18, 18, 0.92);
+            border-bottom: 1px solid #333;
+        }
+
+        .nav-back {
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            transition: color .2s;
+        }
+
+        .nav-back:hover {
+            color: var(--bark);
+        }
+
+        .nav-back svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .theme-btn {
+            background: none;
+            border: 1.5px solid var(--border);
+            border-radius: 20px;
+            padding: .32rem .75rem;
+            font-size: .9rem;
+            cursor: pointer;
+            transition: border-color .2s;
+        }
+
+        .theme-btn:hover {
+            border-color: var(--bark);
+        }
+
+        /* ── Page Layout ── */
+        .login-page {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: calc(100vh - 57px);
+        }
+
+        /* ── Left Panel ── */
+        .login-visual {
+            background: linear-gradient(145deg, #3d1c10 0%, #6b3d2e 45%, #c0392b 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-visual::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .login-visual::after {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            top: -80px;
+            right: -80px;
+        }
+
+        .visual-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: #fff;
+            max-width: 420px;
+        }
+
+        .visual-cake {
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            display: block;
+            filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.3));
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .visual-content h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+
+        .visual-content h2 em {
+            font-style: italic;
+            color: #f0d5c8;
+        }
+
+        .visual-content p {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.05rem;
+            opacity: .75;
+            line-height: 1.7;
+            margin-bottom: 2rem;
+        }
+
+        .visual-perks {
+            display: flex;
+            flex-direction: column;
+            gap: .75rem;
+            text-align: left;
+        }
+
+        .visual-perk {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: .65rem 1rem;
+            font-size: .82rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .visual-perk .perk-ico {
+            font-size: 1.2rem;
+        }
+
+        .visual-bubbles {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.06);
+            animation: rise linear infinite;
+        }
+
+        @keyframes rise {
+            from {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 1;
+            }
+
+            90% {
+                opacity: 0.5;
+            }
+
+            to {
+                transform: translateY(-20vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ── Right Panel (Form) ── */
+        .login-form-panel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 2rem;
+            background: var(--bg);
+            transition: background var(--tr);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .login-brand {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-brand-ico {
+            font-size: 1.9rem;
+        }
+
+        .login-brand-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .login-brand-name em {
+            font-style: italic;
+            color: var(--rose);
+        }
+
+        /* ── Tab Toggle ── */
+        .auth-tabs {
+            display: flex;
+            background: var(--bg2);
+            border-radius: 14px;
+            padding: 4px;
+            margin-bottom: 1.8rem;
+            border: 1px solid var(--border);
+        }
+
+        .auth-tab {
+            flex: 1;
+            padding: .55rem;
+            border-radius: 10px;
+            font-size: .8rem;
+            font-weight: 600;
+            letter-spacing: .3px;
+            text-align: center;
+            cursor: pointer;
+            background: none;
+            color: var(--muted);
+            transition: all .25s;
+            border: none;
+        }
+
+        .auth-tab.active {
+            background: var(--card-bg);
+            color: var(--bark);
+            box-shadow: 0 2px 10px rgba(107, 61, 46, .12);
+        }
+
+        /* ── Form Panels ── */
+        .auth-panel {
+            display: none;
+        }
+
+        .auth-panel.active {
+            display: block;
+        }
+
+        .form-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.55rem;
+            color: var(--dark);
+            margin-bottom: .3rem;
+            transition: color var(--tr);
+        }
+
+        .form-subtitle {
+            font-size: .82rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .fgrp {
+            display: flex;
+            flex-direction: column;
+            gap: .4rem;
+            margin-bottom: 1rem;
+        }
+
+        .fgrp label {
+            font-size: .73rem;
+            font-weight: 600;
+            color: var(--muted);
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        .fgrp input,
+        .fgrp select {
+            background: var(--bg2);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: .7rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: .88rem;
+            color: var(--text);
+            outline: none;
+            width: 100%;
+            transition: border-color .2s, background var(--tr);
+        }
+
+        .fgrp input:focus,
+        .fgrp select:focus {
+            border-color: var(--rose);
+            background: var(--card-bg);
+        }
+
+        .input-icon-wrap {
+            position: relative;
+        }
+
+        .input-icon-wrap input {
+            padding-right: 2.8rem;
+        }
+
+        .input-eye {
+            position: absolute;
+            right: .75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--muted);
+            padding: .1rem;
+            line-height: 1;
+        }
+
+        .f-err {
+            font-size: .74rem;
+            color: var(--rose);
+            min-height: .9rem;
+            margin-top: .2rem;
+        }
+
+        .forgot-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .forgot-link {
+            font-size: .75rem;
+            color: var(--rose);
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .forgot-link:hover {
+            opacity: .7;
+        }
+
+        /* ── Submit Button ── */
+        .login-btn {
+            width: 100%;
+            background: linear-gradient(135deg, var(--bark), var(--rose));
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            padding: .9rem;
+            font-family: 'Jost', sans-serif;
+            font-size: .88rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .25s;
+            letter-spacing: .5px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .login-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            transition: opacity .2s;
+        }
+
+        .login-btn:hover::after {
+            opacity: 1;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(192, 57, 43, .35);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .login-btn.loading {
+            pointer-events: none;
+            opacity: .8;
+        }
+
+        /* ── Divider ── */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: .75rem;
+            margin: 1.1rem 0;
+            color: var(--muted);
+            font-size: .75rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── Google btn ── */
+        .google-btn {
+            width: 100%;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            padding: .78rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: .85rem;
+            font-weight: 500;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .6rem;
+            cursor: pointer;
+            transition: all .2s;
+            margin-bottom: 1rem;
+        }
+
+        .google-btn:hover {
+            background: var(--bg2);
+            border-color: var(--bark);
+        }
+
+        .google-ico {
+            font-size: 1.1rem;
+        }
+
+        /* ── Switch ── */
+        .switch-text {
+            text-align: center;
+            font-size: .8rem;
+            color: var(--muted);
+            margin-top: .5rem;
+        }
+
+        .switch-text a {
+            color: var(--rose);
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .switch-text a:hover {
+            opacity: .7;
+        }
+
+        /* ── Phone Row ── */
+        .phone-row {
+            display: flex;
+            gap: .5rem;
+        }
+
+        .phone-row select {
+            flex-shrink: 0;
+            width: auto;
+        }
+
+        .phone-row input {
+            flex: 1;
+        }
+
+        /* ── OTP ── */
+        .otp-row {
+            display: flex;
+            gap: .4rem;
+            margin-bottom: .8rem;
+        }
+
+        .otp-box {
+            flex: 1;
+            width: 0;
+            min-width: 0;
+            height: 46px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: var(--bg2);
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 0;
+            color: var(--dark);
+            outline: none;
+            transition: border-color .2s, background var(--tr);
+            font-family: 'Jost', sans-serif;
+        }
+
+        .otp-box:focus {
+            border-color: var(--rose);
+            background: var(--card-bg);
+            box-shadow: 0 0 0 3px rgba(192, 57, 43, .12);
+        }
+
+        .otp-hint {
+            background: linear-gradient(135deg, rgba(181, 136, 58, .12), rgba(192, 57, 43, .08));
+            border: 1.5px solid rgba(181, 136, 58, .3);
+            border-radius: 10px;
+            padding: .55rem .9rem;
+            font-size: .78rem;
+            color: var(--bark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .8rem;
+        }
+
+        .demo-fill {
+            background: var(--gold);
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: .2rem .6rem;
+            font-size: .72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity .2s;
+        }
+
+        .demo-fill:hover {
+            opacity: .85;
+        }
+
+        .otp-resend {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .5rem;
+            font-size: .75rem;
+            color: var(--muted);
+            margin-top: .5rem;
+        }
+
+        .resend-btn {
+            background: none;
+            border: none;
+            color: var(--rose);
+            font-weight: 600;
+            font-size: .75rem;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .back-lnk {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: .78rem;
+            cursor: pointer;
+            display: block;
+            margin: .5rem auto 0;
+            padding: .3rem;
+        }
+
+        .back-lnk:hover {
+            color: var(--bark);
+        }
+
+        /* ── Success state ── */
+        .success-screen {
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        .success-ico {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--bark), var(--rose));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.2rem;
+            font-size: 1.8rem;
+            box-shadow: 0 8px 24px rgba(192, 57, 43, .28);
+            animation: popIn .4s cubic-bezier(.34, 1.56, .64, 1);
+        }
+
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-screen h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: .4rem;
+        }
+
+        .success-screen p {
+            font-size: .84rem;
+            color: var(--muted);
+            margin-bottom: 1.4rem;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--bark), var(--rose));
+            color: #fff;
+            border-radius: 12px;
+            padding: .8rem 2rem;
+            font-weight: 600;
+            font-size: .85rem;
+            letter-spacing: .3px;
+            transition: all .25s;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(192, 57, 43, .3);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 768px) {
+            .login-visual {
+                display: none;
+            }
+
+            .login-page {
+                grid-template-columns: 1fr;
+            }
+
+            .login-form-panel {
+                padding: 2rem 1.2rem;
+            }
+        }
+
+        /* ── Note ── */
+        .auth-note {
+            font-size: .7rem;
+            color: var(--muted);
+            text-align: center;
+            margin-top: .6rem;
+            line-height: 1.6;
+        }
+
+        /* ── Toast ── */
+        .login-toast {
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(30px);
+            background: var(--dark);
+            color: var(--cream);
+            border-radius: 12px;
+            padding: .7rem 1.4rem;
+            font-size: .82rem;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s, transform .3s;
+            white-space: nowrap;
+        }
+
+        .login-toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="login-nav">
+        <a href="index.html" class="nav-back">
+            <svg viewBox="0 0 24 24">
+                <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+            Back to Silkoven
+        </a>
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">☀️</button>
+    </nav>
+
+    <!-- Page -->
+    <div class="login-page">
+
+        <!-- Left Visual Panel -->
+        <div class="login-visual">
+            <div class="visual-bubbles" id="bubbles"></div>
+            <div class="visual-content">
+                <span class="visual-cake">🎂</span>
+                <h2>Your sweet<br><em>perks await</em></h2>
+                <p>Sign in to unlock order tracking, wishlist saves, loyalty points and exclusive member offers.</p>
+                <div class="visual-perks">
+                    <div class="visual-perk">
+                        <span class="perk-ico">🔥</span>
+                        <span>Track your bake in real-time</span>
+                    </div>
+                    <div class="visual-perk">
+                        <span class="perk-ico">❤️</span>
+                        <span>Save your favourite cakes to wishlist</span>
+                    </div>
+                    <div class="visual-perk">
+                        <span class="perk-ico">⭐</span>
+                        <span>Earn loyalty points on every order</span>
+                    </div>
+                    <div class="visual-perk">
+                        <span class="perk-ico">🎁</span>
+                        <span>Exclusive early-access to new flavours</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Form Panel -->
+        <div class="login-form-panel">
+            <div class="login-card">
+
+                <!-- Brand -->
+                <div class="login-brand">
+                    <span class="login-brand-ico">🎂</span>
+                    <span class="login-brand-name">Silk<em>oven</em></span>
+                </div>
+
+                <!-- Tabs -->
+                <div class="auth-tabs">
+                    <button class="auth-tab active" id="tabEmail" onclick="switchTab('email')">Email & Password</button>
+                    <button class="auth-tab" id="tabWhatsapp" onclick="switchTab('whatsapp')">WhatsApp OTP</button>
+                </div>
+
+                <!-- ── EMAIL PANEL ── -->
+                <div class="auth-panel active" id="panelEmail">
+
+                    <!-- Sign In sub-view -->
+                    <div id="emailSignIn">
+                        <div class="form-title">Welcome back</div>
+                        <div class="form-subtitle">Sign in to your Silkoven account</div>
+
+                        <div class="fgrp">
+                            <label>Email Address</label>
+                            <input type="email" id="emailInput" placeholder="you@example.com" autocomplete="email" />
+                        </div>
+                        <div class="fgrp">
+                            <label>Password</label>
+                            <div class="input-icon-wrap">
+                                <input type="password" id="passwordInput" placeholder="Your password"
+                                    autocomplete="current-password" id="pwInput" />
+                                <button class="input-eye" onclick="togglePw('passwordInput', this)"
+                                    title="Show/hide">👁</button>
+                            </div>
+                        </div>
+                        <div class="forgot-row">
+                            <span class="forgot-link" onclick="showForgot()">Forgot password?</span>
+                        </div>
+                        <div class="f-err" id="emailErr"></div>
+
+                        <button class="login-btn" id="signInBtn" onclick="doSignIn()">Sign In</button>
+
+                        <div class="divider">or continue with</div>
+                        <button class="google-btn" onclick="doGoogle()">
+                            <span class="google-ico">🔵</span> Continue with Google
+                        </button>
+
+                        <div class="switch-text">
+                            New to Silkoven? <a onclick="showSignUp()">Create account</a>
+                        </div>
+                    </div>
+
+                    <!-- Sign Up sub-view -->
+                    <div id="emailSignUp" class="hidden">
+                        <div class="form-title">Create account</div>
+                        <div class="form-subtitle">Join the Silkoven family — it's free!</div>
+
+                        <div class="fgrp">
+                            <label>Full Name</label>
+                            <input type="text" id="nameInput" placeholder="Your name" autocomplete="name" />
+                        </div>
+                        <div class="fgrp">
+                            <label>Email Address</label>
+                            <input type="email" id="regEmailInput" placeholder="you@example.com" autocomplete="email" />
+                        </div>
+                        <div class="fgrp">
+                            <label>Password</label>
+                            <div class="input-icon-wrap">
+                                <input type="password" id="regPasswordInput" placeholder="Min. 8 characters"
+                                    autocomplete="new-password" />
+                                <button class="input-eye" onclick="togglePw('regPasswordInput', this)"
+                                    title="Show/hide">👁</button>
+                            </div>
+                        </div>
+                        <div class="fgrp">
+                            <label>Confirm Password</label>
+                            <div class="input-icon-wrap">
+                                <input type="password" id="confirmPasswordInput" placeholder="Repeat password"
+                                    autocomplete="new-password" />
+                                <button class="input-eye" onclick="togglePw('confirmPasswordInput', this)"
+                                    title="Show/hide">👁</button>
+                            </div>
+                        </div>
+                        <div class="f-err" id="regErr"></div>
+
+                        <button class="login-btn" onclick="doSignUp()">Create Account</button>
+
+                        <div class="switch-text">
+                            Already have an account? <a onclick="showSignIn()">Sign in</a>
+                        </div>
+                    </div>
+
+                    <!-- Forgot Password sub-view -->
+                    <div id="emailForgot" class="hidden">
+                        <div class="form-title">Reset password</div>
+                        <div class="form-subtitle">Enter your email and we'll send a reset link.</div>
+
+                        <div class="fgrp">
+                            <label>Email Address</label>
+                            <input type="email" id="forgotEmailInput" placeholder="you@example.com" />
+                        </div>
+                        <div class="f-err" id="forgotErr"></div>
+
+                        <button class="login-btn" onclick="doForgot()">Send Reset Link</button>
+                        <div class="switch-text"><a onclick="showSignIn()">← Back to sign in</a></div>
+                    </div>
+                </div>
+
+                <!-- ── WHATSAPP PANEL ── -->
+                <div class="auth-panel" id="panelWhatsapp">
+
+                    <!-- Step 1: Phone -->
+                    <div id="waStep1">
+                        <div class="form-title">Sign in with WhatsApp</div>
+                        <div class="form-subtitle">We'll send a 6-digit OTP to your WhatsApp.</div>
+
+                        <div class="fgrp">
+                            <label>Phone Number</label>
+                            <div class="phone-row">
+                                <select id="countryCode">
+                                    <option value="+91">+91 🇮🇳</option>
+                                    <option value="+1">+1 🇺🇸</option>
+                                    <option value="+44">+44 🇬🇧</option>
+                                    <option value="+971">+971 🇦🇪</option>
+                                    <option value="+65">+65 🇸🇬</option>
+                                </select>
+                                <input type="tel" id="phoneInput" placeholder="Phone number" maxlength="15"
+                                    oninput="this.value=this.value.replace(/\D/g,'')" />
+                            </div>
+                            <div class="f-err" id="phoneErr"></div>
+                        </div>
+
+                        <button class="login-btn" onclick="sendOTP()">Send WhatsApp OTP</button>
+                        <p class="auth-note">By continuing you agree to receive a WhatsApp message from Silkoven.</p>
+                    </div>
+
+                    <!-- Step 2: OTP -->
+                    <div id="waStep2" class="hidden">
+                        <div class="form-title">Enter OTP</div>
+                        <div class="form-subtitle" id="waOtpSentTo">Code sent to your WhatsApp</div>
+
+                        <div class="otp-hint">
+                            <span>🔑 Demo OTP: <strong>123456</strong></span>
+                            <button class="demo-fill" onclick="fillDemoOTP()">Autofill</button>
+                        </div>
+
+                        <div class="otp-row">
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,0)"
+                                onkeydown="otpBack(this,0)" />
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,1)"
+                                onkeydown="otpBack(this,1)" />
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,2)"
+                                onkeydown="otpBack(this,2)" />
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,3)"
+                                onkeydown="otpBack(this,3)" />
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,4)"
+                                onkeydown="otpBack(this,4)" />
+                            <input type="text" class="otp-box" maxlength="1" oninput="otpInput(this,5)"
+                                onkeydown="otpBack(this,5)" />
+                        </div>
+                        <div class="f-err" id="otpErr"></div>
+
+                        <button class="login-btn" onclick="verifyOTP()">Verify & Continue</button>
+                        <div class="otp-resend">
+                            <span id="otpTimerTxt">Resend in <strong id="timerCount">30</strong>s</span>
+                            <button class="resend-btn hidden" id="resendBtn" onclick="resendOTP()">Resend OTP</button>
+                        </div>
+                        <button class="back-lnk" onclick="backToPhone()">← Change number</button>
+                    </div>
+
+                    <!-- Step 3: Success -->
+                    <div id="waStep3" class="hidden">
+                        <div class="success-screen">
+                            <div class="success-ico">✓</div>
+                            <h3>You're in!</h3>
+                            <p id="waWelcome">Welcome to Silkoven</p>
+                            <a href="index.html" class="continue-btn">Continue Shopping →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success (email/signup) -->
+                <div id="authSuccess" class="hidden">
+                    <div class="success-screen">
+                        <div class="success-ico">✓</div>
+                        <h3 id="successTitle">Signed in!</h3>
+                        <p id="successSub">Welcome back to Silkoven.</p>
+                        <a href="index.html" class="continue-btn">Continue Shopping →</a>
+                    </div>
+                </div>
+
+            </div><!-- end login-card -->
+        </div><!-- end login-form-panel -->
+    </div><!-- end login-page -->
+
+    <!-- Toast -->
+    <div class="login-toast" id="loginToast"></div>
+
+    <script>
+        const API = 'http://localhost:3001/api';
+
+        /* ── Theme ── */
+        const saved = localStorage.getItem('sk_theme');
+        if (saved) { document.documentElement.dataset.theme = saved; document.getElementById('themeBtn').textContent = saved === 'dark' ? '🌙' : '☀️'; }
+
+        function toggleTheme() {
+            const dark = document.documentElement.dataset.theme === 'dark';
+            const next = dark ? 'light' : 'dark';
+            document.documentElement.dataset.theme = next;
+            document.getElementById('themeBtn').textContent = dark ? '☀️' : '🌙';
+            localStorage.setItem('sk_theme', next);
+        }
+
+        /* ── Tabs ── */
+        function switchTab(tab) {
+            document.getElementById('tabEmail').classList.toggle('active', tab === 'email');
+            document.getElementById('tabWhatsapp').classList.toggle('active', tab === 'whatsapp');
+            document.getElementById('panelEmail').classList.toggle('active', tab === 'email');
+            document.getElementById('panelWhatsapp').classList.toggle('active', tab === 'whatsapp');
+        }
+
+        /* ── Email sub-views ── */
+        function showSignIn() {
+            document.getElementById('emailSignIn').classList.remove('hidden');
+            document.getElementById('emailSignUp').classList.add('hidden');
+            document.getElementById('emailForgot').classList.add('hidden');
+            document.getElementById('authSuccess').classList.add('hidden');
+        }
+        function showSignUp() {
+            document.getElementById('emailSignIn').classList.add('hidden');
+            document.getElementById('emailSignUp').classList.remove('hidden');
+            document.getElementById('emailForgot').classList.add('hidden');
+        }
+        function showForgot() {
+            document.getElementById('emailSignIn').classList.add('hidden');
+            document.getElementById('emailForgot').classList.remove('hidden');
+        }
+
+        /* ── Password Show/Hide ── */
+        function togglePw(inputId, btn) {
+            const inp = document.getElementById(inputId);
+            const show = inp.type === 'password';
+            inp.type = show ? 'text' : 'password';
+            btn.textContent = show ? '🙈' : '👁';
+        }
+
+        /* ── Toast ── */
+        function showToast(msg, isError = false) {
+            const t = document.getElementById('loginToast');
+            t.textContent = msg;
+            t.style.background = isError ? '#c0392b' : '';
+            t.classList.add('show');
+            clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 3000);
+        }
+
+        /* ── API helper ── */
+        async function apiPost(url, body) {
+            const res = await fetch(API + url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body),
+            });
+            return res.json();
+        }
+
+        /* ── Save session ── */
+        function saveSession(data) {
+            localStorage.setItem('sk_token', data.token);
+            localStorage.setItem('sk_user', JSON.stringify(data.user));
+            localStorage.setItem('sk_loggedIn', '1');
+        }
+
+        /* ── Show Success ── */
+        function showSuccess(title, sub) {
+            document.getElementById('emailSignIn').classList.add('hidden');
+            document.getElementById('emailSignUp').classList.add('hidden');
+            document.getElementById('emailForgot').classList.add('hidden');
+            document.getElementById('panelWhatsapp').classList.remove('active');
+            document.getElementById('authSuccess').classList.remove('hidden');
+            document.getElementById('successTitle').textContent = title;
+            document.getElementById('successSub').textContent = sub;
+        }
+
+        /* ── Sign In → POST /api/auth/login ── */
+        async function doSignIn() {
+            const email = document.getElementById('emailInput').value.trim();
+            const pw = document.getElementById('passwordInput').value;
+            const err = document.getElementById('emailErr');
+
+            if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email address.'; return; }
+            if (pw.length < 6) { err.textContent = 'Password must be at least 6 characters.'; return; }
+            err.textContent = '';
+
+            const btn = document.getElementById('signInBtn');
+            btn.textContent = 'Signing in…'; btn.classList.add('loading');
+
+            try {
+                const data = await apiPost('/auth/login', { email, password: pw });
+                if (!data.success) { err.textContent = data.message; return; }
+                saveSession(data);
+                showSuccess('Welcome back! 🎂', data.message);
+            } catch (e) {
+                err.textContent = 'Cannot connect to server. Make sure server.js is running.';
+            } finally {
+                btn.textContent = 'Sign In'; btn.classList.remove('loading');
+            }
+        }
+
+        /* ── Sign Up → POST /api/auth/register ── */
+        async function doSignUp() {
+            const name = document.getElementById('nameInput').value.trim();
+            const email = document.getElementById('regEmailInput').value.trim();
+            const pw = document.getElementById('regPasswordInput').value;
+            const cpw = document.getElementById('confirmPasswordInput').value;
+            const err = document.getElementById('regErr');
+
+            if (!name) { err.textContent = 'Please enter your name.'; return; }
+            if (!email || !email.includes('@')) { err.textContent = 'Please enter a valid email.'; return; }
+            if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters.'; return; }
+            if (pw !== cpw) { err.textContent = 'Passwords do not match.'; return; }
+            err.textContent = '';
+
+            const btn = document.querySelector('#emailSignUp .login-btn');
+            btn.textContent = 'Creating account…'; btn.classList.add('loading');
+
+            try {
+                const data = await apiPost('/auth/register', { name, email, password: pw });
+                if (!data.success) { err.textContent = data.message; return; }
+                saveSession(data);
+                showSuccess('Account created! 🎉', data.message);
+            } catch (e) {
+                err.textContent = 'Cannot connect to server. Make sure server.js is running.';
+            } finally {
+                btn.textContent = 'Create Account'; btn.classList.remove('loading');
+            }
+        }
+
+        /* ── Forgot Password ── */
+        function doForgot() {
+            const email = document.getElementById('forgotEmailInput').value.trim();
+            if (!email || !email.includes('@')) { document.getElementById('forgotErr').textContent = 'Please enter a valid email.'; return; }
+            document.getElementById('forgotErr').textContent = '';
+            showToast('✉ Reset link sent! (Demo mode — no email sent)');
+            setTimeout(showSignIn, 1800);
+        }
+
+        /* ── Google ── */
+        function doGoogle() { showToast('Google sign-in coming soon!'); }
+
+        /* ═══════════════════════════════════════
+           WhatsApp OTP — calls real backend API
+           ═══════════════════════════════════════ */
+        let otpTimer, currentPhone = '', serverDemoOtp = '';
+
+        /* SEND OTP → POST /api/auth/send-otp */
+        async function sendOTP() {
+            const p = document.getElementById('phoneInput').value;
+            const cc = document.getElementById('countryCode').value;
+            if (p.length < 8) { document.getElementById('phoneErr').textContent = 'Please enter a valid phone number.'; return; }
+            document.getElementById('phoneErr').textContent = '';
+
+            const btn = document.querySelector('#waStep1 .login-btn');
+            btn.textContent = 'Sending…'; btn.classList.add('loading');
+
+            currentPhone = cc + p;
+            try {
+                const data = await apiPost('/auth/send-otp', { phone: currentPhone });
+                if (!data.success) { document.getElementById('phoneErr').textContent = data.message; return; }
+
+                // Store demo OTP from server for autofill button
+                serverDemoOtp = data.demoOtp || '';
+
+                document.getElementById('waOtpSentTo').textContent =
+                    `Code sent to ${currentPhone}. Check terminal for demo OTP.`;
+                document.getElementById('waStep1').classList.add('hidden');
+                document.getElementById('waStep2').classList.remove('hidden');
+                startOTPTimer();
+                document.querySelectorAll('.otp-box').forEach(b => b.value = '');
+                document.querySelectorAll('.otp-box')[0].focus();
+                showToast(data.message);
+            } catch (e) {
+                document.getElementById('phoneErr').textContent = 'Cannot reach server. Is server.js running?';
+            } finally {
+                btn.textContent = 'Send WhatsApp OTP'; btn.classList.remove('loading');
+            }
+        }
+
+        /* VERIFY OTP → POST /api/auth/verify-otp */
+        async function verifyOTP() {
+            const code = Array.from(document.querySelectorAll('.otp-box')).map(b => b.value).join('');
+            if (code.length < 6) { document.getElementById('otpErr').textContent = 'Please enter the 6-digit code.'; return; }
+            document.getElementById('otpErr').textContent = '';
+
+            const btn = document.querySelector('#waStep2 .login-btn');
+            btn.textContent = 'Verifying…'; btn.classList.add('loading');
+
+            try {
+                const data = await apiPost('/auth/verify-otp', { phone: currentPhone, otp: code });
+                if (!data.success) { document.getElementById('otpErr').textContent = data.message; return; }
+                clearInterval(otpTimer);
+                saveSession(data);
+                document.getElementById('waStep2').classList.add('hidden');
+                document.getElementById('waStep3').classList.remove('hidden');
+                document.getElementById('waWelcome').textContent = data.message;
+            } catch (e) {
+                document.getElementById('otpErr').textContent = 'Cannot reach server. Is server.js running?';
+            } finally {
+                btn.textContent = 'Verify & Continue'; btn.classList.remove('loading');
+            }
+        }
+
+        function startOTPTimer() {
+            let t = 30;
+            document.getElementById('timerCount').textContent = t;
+            document.getElementById('otpTimerTxt').classList.remove('hidden');
+            document.getElementById('resendBtn').classList.add('hidden');
+            clearInterval(otpTimer);
+            otpTimer = setInterval(() => {
+                t--;
+                document.getElementById('timerCount').textContent = t;
+                if (t <= 0) {
+                    clearInterval(otpTimer);
+                    document.getElementById('otpTimerTxt').classList.add('hidden');
+                    document.getElementById('resendBtn').classList.remove('hidden');
+                }
+            }, 1000);
+        }
+
+        async function resendOTP() {
+            showToast('Resending OTP…');
+            await sendOTP();
+        }
+
+        function fillDemoOTP() {
+            const otp = serverDemoOtp || '123456';
+            const boxes = document.querySelectorAll('.otp-box');
+            otp.split('').forEach((d, i) => { if (boxes[i]) boxes[i].value = d; });
+            if (boxes[5]) boxes[5].focus();
+        }
+
+        function otpInput(el, i) {
+            el.value = el.value.replace(/\D/g, '').slice(-1);
+            if (el.value) { const boxes = document.querySelectorAll('.otp-box'); if (i < 5) boxes[i + 1].focus(); }
+        }
+        function otpBack(el, i) { if (event.key === 'Backspace' && !el.value && i > 0) document.querySelectorAll('.otp-box')[i - 1].focus(); }
+
+        function backToPhone() {
+            clearInterval(otpTimer);
+            document.getElementById('waStep2').classList.add('hidden');
+            document.getElementById('waStep1').classList.remove('hidden');
+        }
+
+        /* ── Floating Bubbles ── */
+        const bc = document.getElementById('bubbles');
+        for (let i = 0; i < 12; i++) {
+            const b = document.createElement('div');
+            b.className = 'bubble';
+            const s = Math.random() * 60 + 10;
+            b.style.cssText = `width:${s}px;height:${s}px;left:${Math.random() * 100}%;animation-duration:${Math.random() * 10 + 8}s;animation-delay:${Math.random() * 10}s`;
+            bc.appendChild(b);
+        }
+
+        /* ── Redirect if already logged in ── */
+        if (localStorage.getItem('sk_loggedIn') === '1') {
+            const u = JSON.parse(localStorage.getItem('sk_user') || '{}');
+            if (u.name) showToast(`Already signed in as ${u.name}`);
+        }
+    </script>
+</body>
+
+</html>

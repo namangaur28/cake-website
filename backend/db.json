@@ -1,0 +1,82 @@
+{
+  "users": [
+    {
+      "id": "979e63d2-ac4d-488f-845e-f2f4b842c3ad",
+      "name": "Priya Sharma",
+      "email": "priya@silkoven.in",
+      "passwordHash": "$2a$10$qUc6RWTiTL9fw7zWi914Ou70KDHJdpRRYSFFRzJ1hINWN2PyroY6y",
+      "phone": null,
+      "createdAt": "2026-02-24T10:48:50.717Z"
+    },
+    {
+      "id": "fb608159-8bdf-4657-ad6d-33e60a7ea19a",
+      "name": "naman",
+      "email": "gaur@gmail.com",
+      "passwordHash": "$2a$10$LM2UuEhkbGowuV13szZbguh8yh2DOtkyEOV0FAT5uAofolvKkGcda",
+      "phone": null,
+      "createdAt": "2026-02-24T10:52:08.514Z"
+    },
+    {
+      "id": "302f3578-8e89-4c25-88b7-0e6ba92767fe",
+      "name": "naman",
+      "email": "gaurnaman800@gmail.com",
+      "passwordHash": "$2a$10$onxi1oPvSLtPOPC4MWRHHOXoePXTFEwnyCP6uGETWOXcCEs1QIgHK",
+      "phone": null,
+      "createdAt": "2026-02-24T10:55:41.682Z"
+    }
+  ],
+  "otps": [
+    {
+      "phone": "+919876543210",
+      "otp": "392010",
+      "expiresAt": 1771930441847
+    },
+    {
+      "phone": "+916375059171",
+      "otp": "880906",
+      "expiresAt": 1771930665651
+    }
+  ],
+  "orders": [
+    {
+      "orderId": "SLK-PXU37J",
+      "backendOrderId": "order_demo_1771931317959",
+      "items": [
+        {
+          "id": 2,
+          "name": "Midnight Velvet",
+          "desc": "Dark Valrhona ganache, espresso layers, hand-crumbled cocoa crust.",
+          "emoji": "🍫",
+          "price": 2199,
+          "tags": [
+            "popular",
+            "chocolate"
+          ],
+          "rating": 4.7,
+          "reviews": 84,
+          "badge": "NEW",
+          "bg": "#f5e8d8",
+          "qty": 1
+        },
+        {
+          "id": 3,
+          "name": "Citrus Bloom",
+          "desc": "Meyer lemon curd, elderflower cream, toasted meringue crown.",
+          "emoji": "🍋",
+          "price": 1599,
+          "tags": [
+            "fruit"
+          ],
+          "rating": 4.6,
+          "reviews": 61,
+          "badge": null,
+          "bg": "#fef9e0",
+          "qty": 1
+        }
+      ],
+      "address": "16th cross road",
+      "card": "4334",
+      "paidAt": "2026-02-24T11:09:01.608Z"
+    }
+  ]
+}

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Silkoven — Admin Dashboard</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --rose: #c0392b;
+            --bark: #6b3d2e;
+            --gold: #b5883a;
+            --cream: #fdf7f0;
+            --dark: #1a0e0a;
+            --card: #fff;
+            --border: rgba(107, 61, 46, .15);
+            --muted: #888;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: #f5ede6;
+            color: var(--dark);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        header {
+            background: linear-gradient(135deg, var(--bark), var(--rose));
+            color: #fff;
+            padding: 2rem 2.5rem 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        header h1 em {
+            font-style: italic;
+            opacity: .8;
+        }
+
+        .header-badge {
+            background: rgba(255, 255, 255, .18);
+            border: 1px solid rgba(255, 255, 255, .25);
+            border-radius: 20px;
+            padding: .3rem .9rem;
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        /* ── Layout ── */
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        /* ── Section title ── */
+        .section-title {
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: .8rem;
+        }
+
+        /* ── Quick Link Cards ── */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .link-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 1.4rem 1.3rem;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--dark);
+            display: flex;
+            align-items: flex-start;
+            gap: .9rem;
+            transition: all .22s;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(107, 61, 46, .15);
+        }
+
+        .link-ico {
+            font-size: 1.7rem;
+            flex-shrink: 0;
+        }
+
+        .link-label {
+            font-size: .78rem;
+            font-weight: 600;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            margin-bottom: .2rem;
+        }
+
+        .link-url {
+            font-size: .82rem;
+            color: var(--rose);
+            word-break: break-all;
+        }
+
+        .link-desc {
+            font-size: .74rem;
+            color: var(--muted);
+            margin-top: .25rem;
+        }
+
+        /* ── Color badges ── */
+        .badge-green {
+            border-top: 3px solid #27ae60;
+        }
+
+        .badge-rose {
+            border-top: 3px solid var(--rose);
+        }
+
+        .badge-gold {
+            border-top: 3px solid var(--gold);
+        }
+
+        .badge-blue {
+            border-top: 3px solid #2980b9;
+        }
+
+        .badge-purple {
+            border-top: 3px solid #8e44ad;
+        }
+
+        /* ── Data panel ── */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        @media(max-width:680px) {
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .data-card {
+            background: var(--card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+        }
+
+        .data-card-head {
+            padding: .9rem 1.2rem;
+            background: var(--cream);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .data-card-head h3 {
+            font-size: .82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .data-card-head .count {
+            background: var(--rose);
+            color: #fff;
+            border-radius: 20px;
+            padding: .15rem .65rem;
+            font-size: .72rem;
+            font-weight: 600;
+        }
+
+        .data-body {
+            padding: 1rem 1.2rem;
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .data-empty {
+            font-size: .82rem;
+            color: var(--muted);
+            text-align: center;
+            padding: 1.5rem 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: .8rem;
+        }
+
+        th {
+            text-align: left;
+            font-size: .68rem;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            color: var(--muted);
+            padding: .4rem .5rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+        }
+
+        td {
+            padding: .55rem .5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, .04);
+            vertical-align: top;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .tag {
+            background: rgba(192, 57, 43, .1);
+            color: var(--rose);
+            border-radius: 6px;
+            padding: .1rem .45rem;
+            font-size: .7rem;
+            font-weight: 600;
+        }
+
+        .tag-green {
+            background: rgba(39, 174, 96, .1);
+            color: #27ae60;
+        }
+
+        /* ── How to run section ── */
+        .run-card {
+            background: var(--dark);
+            color: #f0ece8;
+            border-radius: 16px;
+            padding: 1.4rem 1.7rem;
+            margin-bottom: 2rem;
+        }
+
+        .run-card h3 {
+            font-size: .9rem;
+            font-weight: 600;
+            margin-bottom: .8rem;
+            opacity: .6;
+            letter-spacing: .5px;
+            text-transform: uppercase;
+        }
+
+        code {
+            display: block;
+            background: rgba(255, 255, 255, .08);
+            border-radius: 8px;
+            padding: .6rem 1rem;
+            font-family: monospace;
+            font-size: .85rem;
+            color: #f0c27f;
+            margin-bottom: .5rem;
+            border: 1px solid rgba(255, 255, 255, .1);
+        }
+
+        code:last-child {
+            margin-bottom: 0;
+        }
+
+        /* ── Refresh btn ── */
+        .refresh-btn {
+            background: var(--rose);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: .4rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: .78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .refresh-btn:hover {
+            opacity: .85;
+        }
+
+        /* ── Status dot ── */
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            display: inline-block;
+            margin-right: .4rem;
+        }
+
+        .status-dot.online {
+            background: #27ae60;
+            box-shadow: 0 0 6px rgba(39, 174, 96, .6);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .5
+            }
+        }
+
+        .server-status {
+            font-size: .8rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🎂 Silk<em>oven</em> — Admin Panel</h1>
+        <span class="header-badge">Demo Mode</span>
+    </header>
+
+    <main>
+        <div class="server-status" id="serverStatus">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">Checking server…</span>
+        </div>
+
+        <!-- HOW TO RUN -->
+        <p class="section-title">How to Start the Server</p>
+        <div class="run-card">
+            <h3>Run these commands in Terminal</h3>
+            <code>cd /Users/namangaur/webProject/backend</code>
+            <code>node server.js</code>
+        </div>
+
+        <!-- QUICK LINKS -->
+        <p class="section-title">Quick Links — Open in Browser</p>
+        <div class="links-grid">
+            <a href="http://localhost:3001/" target="_blank" class="link-card badge-green">
+                <span class="link-ico">🌐</span>
+                <div>
+                    <div class="link-label">Main Website</div>
+                    <div class="link-url">localhost:3001/</div>
+                    <div class="link-desc">The full Silkoven bakery site</div>
+                </div>
+            </a>
+            <a href="http://localhost:3001/login.html" target="_blank" class="link-card badge-rose">
+                <span class="link-ico">🔐</span>
+                <div>
+                    <div class="link-label">Login Page</div>
+                    <div class="link-url">localhost:3001/login.html</div>
+                    <div class="link-desc">Sign in · Sign up · WhatsApp OTP</div>
+                </div>
+            </a>
+            <a href="http://localhost:3001/api/auth/users" target="_blank" class="link-card badge-blue">
+                <span class="link-ico">👥</span>
+                <div>
+                    <div class="link-label">View Users</div>
+                    <div class="link-url">localhost:3001/api/auth/users</div>
+                    <div class="link-desc">All registered accounts in db.json</div>
+                </div>
+            </a>
+            <a href="http://localhost:3001/api/orders" target="_blank" class="link-card badge-gold">
+                <span class="link-ico">📦</span>
+                <div>
+                    <div class="link-label">View Orders</div>
+                    <div class="link-url">localhost:3001/api/orders</div>
+                    <div class="link-desc">All placed orders saved in db.json</div>
+                </div>
+            </a>
+            <a href="http://localhost:3001/api/health" target="_blank" class="link-card badge-purple">
+                <span class="link-ico">💓</span>
+                <div>
+                    <div class="link-label">Server Health</div>
+                    <div class="link-url">localhost:3001/api/health</div>
+                    <div class="link-desc">Check if backend is running</div>
+                </div>
+            </a>
+        </div>
+
+        <!-- LIVE DATA -->
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">
+            <p class="section-title" style="margin:0">Live Data from db.json</p>
+            <button class="refresh-btn" onclick="loadData()">⟳ Refresh</button>
+        </div>
+        <div class="data-grid">
+            <!-- Users -->
+            <div class="data-card">
+                <div class="data-card-head">
+                    <h3>👥 Registered Users</h3>
+                    <span class="count" id="userCount">0</span>
+                </div>
+                <div class="data-body" id="usersBody">
+                    <div class="data-empty">Loading…</div>
+                </div>
+            </div>
+            <!-- Orders -->
+            <div class="data-card">
+                <div class="data-card-head">
+                    <h3>📦 Orders</h3>
+                    <span class="count" id="orderCount">0</span>
+                </div>
+                <div class="data-body" id="ordersBody">
+                    <div class="data-empty">Loading…</div>
+                </div>
+            </div>
+        </div>
+
+        <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:1rem;">
+            This dashboard only works when <code
+                style="display:inline;background:none;color:var(--rose);padding:0;border:none;font-size:.75rem;">node server.js</code>
+            is running from the <strong>backend/</strong> folder.
+        </p>
+    </main>
+
+    <script>
+        const API = 'http://localhost:3001/api';
+
+        async function checkServer() {
+            try {
+                const r = await fetch(API + '/health');
+                const d = await r.json();
+                document.getElementById('statusDot').className = 'status-dot online';
+                document.getElementById('statusText').textContent = `✅  Server online — ${d.time}`;
+            } catch {
+                document.getElementById('statusDot').className = 'status-dot';
+                document.getElementById('statusText').textContent = '❌  Server offline — run: cd backend && node server.js';
+            }
+        }
+
+        async function loadData() {
+            // Users
+            try {
+                const r = await fetch(API + '/auth/users');
+                const d = await r.json();
+                document.getElementById('userCount').textContent = d.count;
+                if (!d.users.length) {
+                    document.getElementById('usersBody').innerHTML = '<div class="data-empty">No users yet. Register on the login page.</div>';
+                } else {
+                    document.getElementById('usersBody').innerHTML = `
+                <table>
+                    <thead><tr><th>Name</th><th>Email / Phone</th><th>Joined</th></tr></thead>
+                    <tbody>${d.users.map(u => `
+                        <tr>
+                            <td><strong>${u.name}</strong></td>
+                            <td>${u.email || u.phone || '—'}</td>
+                            <td>${new Date(u.createdAt).toLocaleDateString('en-IN')}</td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+                }
+            } catch {
+                document.getElementById('usersBody').innerHTML = '<div class="data-empty">Cannot reach server.</div>';
+            }
+
+            // Orders
+            try {
+                const r = await fetch(API + '/orders');
+                const d = await r.json();
+                document.getElementById('orderCount').textContent = d.count;
+                if (!d.orders.length) {
+                    document.getElementById('ordersBody').innerHTML = '<div class="data-empty">No orders yet. Place one from the website!</div>';
+                } else {
+                    document.getElementById('ordersBody').innerHTML = `
+                <table>
+                    <thead><tr><th>Order ID</th><th>Items</th><th>Date</th></tr></thead>
+                    <tbody>${d.orders.map(o => `
+                        <tr>
+                            <td><span class="tag tag-green">${o.orderId}</span></td>
+                            <td>${o.items?.length || 0} item(s)</td>
+                            <td>${new Date(o.paidAt).toLocaleDateString('en-IN')}</td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+                }
+            } catch {
+                document.getElementById('ordersBody').innerHTML = '<div class="data-empty">Cannot reach server.</div>';
+            }
+        }
+
+        checkServer();
+        loadData();
+    </script>
+</body>
+
+</html>
