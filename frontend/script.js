@@ -670,6 +670,7 @@ function init3D() {
     ground.rotation.x = -Math.PI / 2; ground.position.y = -2.8; ground.receiveShadow = true; scene.add(ground);
 
     buildCakeMesh();
+    renderCtrlPanel();   // populate all controls on first open
     setupDrag(canvas);
     animate3D();
 }
