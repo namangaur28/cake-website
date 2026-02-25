@@ -549,6 +549,19 @@
             }
         }   // end loadData
 
+        // Auto-refresh every 10 s with countdown
+        let countdown = 10;
+        const timerEl = document.createElement('div');
+        timerEl.style.cssText = 'text-align:center;font-size:.72rem;color:#aaa;margin-top:.6rem;letter-spacing:.4px;';
+        document.querySelector('main').appendChild(timerEl);
+        function tick() {
+            timerEl.textContent = '⟳ Auto-refresh in ' + countdown + 's';
+            if (countdown <= 0) { countdown = 10; loadData(); checkServer(); }
+            countdown--;
+        }
+        tick();
+        setInterval(tick, 1000);
+
         checkServer();
         loadData();
     </script>
