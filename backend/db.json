@@ -31,6 +31,22 @@
       "passwordHash": "$2a$10$LOK2/4fgC.eA7fNCmPZRO.0lkx1TCUYOkvQVQP/UCT/zVHPukCR3S",
       "phone": null,
       "createdAt": "2026-02-24T15:57:51.600Z"
+    },
+    {
+      "id": "5127b3a2-3c35-4202-ac23-fef0626f51a4",
+      "name": "namana",
+      "email": "gur123@gmail.com",
+      "passwordHash": "$2a$10$HJtAgFDHtLhnDV6PeoJdyOZKCex9ImSIhKiYq75c3F8XJqX.3SsIK",
+      "phone": null,
+      "createdAt": "2026-02-25T09:48:26.317Z"
+    },
+    {
+      "id": "b8adb8c0-d98b-4c8b-8fb1-09289a01fd36",
+      "name": "nomon",
+      "email": "nomon@gmail.com",
+      "passwordHash": "$2a$10$MDOY6GF62DS89VXUdZE7qOhR1iQB9DL/2mqppT6fTQutH8BcRyUU2",
+      "phone": null,
+      "createdAt": "2026-02-25T10:07:54.486Z"
     }
   ],
   "otps": [

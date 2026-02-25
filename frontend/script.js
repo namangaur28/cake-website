@@ -418,10 +418,17 @@ function completeOrder(orderId) {
 
 
 /* ── CONTACT FORM ── */
-function sendContactMsg() {
+async function sendContactMsg() {
     const n = document.getElementById('cfName').value.trim();
     const m = document.getElementById('cfMsg').value.trim();
     if (!n || !m) return;
+    try {
+        await fetch(SERVER.replace('/api', '') + '/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: n, message: m }),
+        });
+    } catch (e) { /* offline — silent fail, still show confirmation */ }
     document.getElementById('cfSent').classList.remove('hidden');
     document.getElementById('cfName').value = '';
     document.getElementById('cfMsg').value = '';

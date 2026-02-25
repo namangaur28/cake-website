@@ -47,13 +47,20 @@ const orderSchema = new mongoose.Schema({
     backendOrderId: String,
     items: Array,
     address: String,
+    instructions: String,   // special add-on instructions from builder
     card: String,
     paidAt: { type: Date, default: Date.now },
+});
+const messageSchema = new mongoose.Schema({
+    name: String,
+    message: String,
+    sentAt: { type: Date, default: Date.now },
 });
 
 const User = mongoose.models.User || mongoose.model('User', userSchema);
 const OTP = mongoose.models.OTP || mongoose.model('OTP', otpSchema);
 const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
+const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
 
 /* ── Middleware ── */
 app.use(cors());
@@ -190,7 +197,11 @@ app.post('/api/payment/create-order', (req, res) => {
 
 /* POST /api/payment/verify */
 app.post('/api/payment/verify', async (req, res) => {
-    const { orderId, cartItems, address, demoCard } = req.body;
+    const { orderId, cartItems, address, demoCard, instructions } = req.body;
+
+    // Also pull instructions from custom cake items if not sent top-level
+    const instr = instructions ||
+        (cartItems || []).map(i => i.instructions).filter(Boolean).join('; ') || '';
 
     const ordCode = 'SLK-' + Math.random().toString(36).substr(2, 6).toUpperCase();
     await Order.create({
@@ -198,10 +209,11 @@ app.post('/api/payment/verify', async (req, res) => {
         backendOrderId: orderId,
         items: cartItems || [],
         address: address || '',
+        instructions: instr,
         card: demoCard || 'demo',
     });
 
-    console.log(`[ORDER PLACED] ${ordCode} | ${cartItems?.length || 0} item(s)`);
+    console.log(`[ORDER PLACED] ${ordCode} | ${cartItems?.length || 0} item(s) | notes: "${instr || 'none'}"`);
     return res.json({ success: true, message: 'Payment confirmed! Your order is being baked.', orderId: ordCode });
 });
 
@@ -209,6 +221,26 @@ app.post('/api/payment/verify', async (req, res) => {
 app.get('/api/orders', async (req, res) => {
     const orders = await Order.find().sort({ paidAt: -1 });
     return res.json({ success: true, count: orders.length, orders });
+});
+
+/* ==============================================
+   CONTACT ROUTES
+   ============================================== */
+
+/* POST /api/contact — save quick message */
+app.post('/api/contact', async (req, res) => {
+    const { name, message } = req.body;
+    if (!name || !message)
+        return res.status(400).json({ success: false, message: 'Name and message are required.' });
+    await Message.create({ name, message });
+    console.log(`[MESSAGE] ${name}: ${message.slice(0, 60)}`);
+    return res.json({ success: true, message: 'Message received!' });
+});
+
+/* GET /api/contact — view all messages (admin) */
+app.get('/api/contact', async (req, res) => {
+    const messages = await Message.find().sort({ sentAt: -1 });
+    return res.json({ success: true, count: messages.length, messages });
 });
 
 /* Health check */

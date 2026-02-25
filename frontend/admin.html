@@ -417,7 +417,7 @@
 
         <!-- LIVE DATA -->
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">
-            <p class="section-title" style="margin:0">Live Data from db.json</p>
+            <p class="section-title" style="margin:0">Live Data — MongoDB</p>
             <button class="refresh-btn" onclick="loadData()">⟳ Refresh</button>
         </div>
         <div class="data-grid">
@@ -438,6 +438,16 @@
                     <span class="count" id="orderCount">0</span>
                 </div>
                 <div class="data-body" id="ordersBody">
+                    <div class="data-empty">Loading…</div>
+                </div>
+            </div>
+            <!-- Messages -->
+            <div class="data-card" style="grid-column:1/-1">
+                <div class="data-card-head">
+                    <h3>💬 Quick Messages</h3>
+                    <span class="count" id="msgCount">0</span>
+                </div>
+                <div class="data-body" id="msgsBody">
                     <div class="data-empty">Loading…</div>
                 </div>
             </div>
@@ -499,11 +509,12 @@
                 } else {
                     document.getElementById('ordersBody').innerHTML = `
                 <table>
-                    <thead><tr><th>Order ID</th><th>Items</th><th>Date</th></tr></thead>
+                    <thead><tr><th>Order ID</th><th>Items</th><th>Special Instructions</th><th>Date</th></tr></thead>
                     <tbody>${d.orders.map(o => `
                         <tr>
                             <td><span class="tag tag-green">${o.orderId}</span></td>
                             <td>${o.items?.length || 0} item(s)</td>
+                            <td style="color:#6b3d2e;font-style:italic">${o.instructions || '—'}</td>
                             <td>${new Date(o.paidAt).toLocaleDateString('en-IN')}</td>
                         </tr>`).join('')}
                     </tbody>
@@ -512,7 +523,31 @@
             } catch {
                 document.getElementById('ordersBody').innerHTML = '<div class="data-empty">Cannot reach server.</div>';
             }
-        }
+
+            // Messages
+            try {
+                const r = await fetch(API + '/contact');
+                const d = await r.json();
+                document.getElementById('msgCount').textContent = d.count;
+                if (!d.messages.length) {
+                    document.getElementById('msgsBody').innerHTML = '<div class="data-empty">No messages yet.</div>';
+                } else {
+                    document.getElementById('msgsBody').innerHTML = `
+                <table>
+                    <thead><tr><th>Name</th><th>Message</th><th>Sent</th></tr></thead>
+                    <tbody>${d.messages.map(m => `
+                        <tr>
+                            <td><strong>${m.name}</strong></td>
+                            <td>${m.message}</td>
+                            <td>${new Date(m.sentAt).toLocaleDateString('en-IN')}</td>
+                        </tr>`).join('')}
+                    </tbody>
+                </table>`;
+                }
+            } catch {
+                document.getElementById('msgsBody').innerHTML = '<div class="data-empty">Cannot reach server.</div>';
+            }
+        }   // end loadData
 
         checkServer();
         loadData();
