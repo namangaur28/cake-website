@@ -13,7 +13,7 @@ const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 /* ── Config ── */
 const JWT_SECRET = 'silkoven_jwt_secret_demo_2024';
@@ -26,8 +26,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // Admin dashboard
-app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '..', 'admin.html')));
-app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'admin.html')));
+app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'admin.html')));
+app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'admin.html')));
 
 
 /* ── DB Helpers ── */

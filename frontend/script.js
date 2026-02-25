@@ -285,7 +285,7 @@ function openQV(id) {
 function closeQV() { closeOverlay('qvOverlay'); }
 
 /* ── ORDER ── */
-const SERVER = 'http://localhost:3001/api';
+const SERVER = 'https://cake-website-ofys.onrender.com/api';
 
 async function placeOrder() {
     if (!loggedIn) { closeCart(); openAuth(); return; }

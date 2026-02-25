@@ -258,7 +258,7 @@
             color: #27ae60;
         }
 
-        /* ── How to run section ── */
+        /* ── Info section ── */
         .run-card {
             background: var(--dark);
             color: #f0ece8;
@@ -352,7 +352,7 @@
 
     <header>
         <h1>🎂 Silk<em>oven</em> — Admin Panel</h1>
-        <span class="header-badge">Demo Mode</span>
+        <span class="header-badge">Live — Render</span>
     </header>
 
     <main>
@@ -361,54 +361,55 @@
             <span id="statusText">Checking server…</span>
         </div>
 
-        <!-- HOW TO RUN -->
-        <p class="section-title">How to Start the Server</p>
+        <!-- DEPLOYMENT INFO -->
+        <p class="section-title">Deployment Info</p>
         <div class="run-card">
-            <h3>Run these commands in Terminal</h3>
-            <code>cd /Users/namangaur/webProject/backend</code>
-            <code>node server.js</code>
+            <h3>Live URLs</h3>
+            <code>Frontend → https://your-vercel-app.vercel.app</code>
+            <code>Backend  → https://cake-website-ofys.onrender.com</code>
         </div>
 
         <!-- QUICK LINKS -->
         <p class="section-title">Quick Links — Open in Browser</p>
         <div class="links-grid">
-            <a href="http://localhost:3001/" target="_blank" class="link-card badge-green">
+            <a href="https://cake-website-ofys.onrender.com/" target="_blank" class="link-card badge-green">
                 <span class="link-ico">🌐</span>
                 <div>
                     <div class="link-label">Main Website</div>
-                    <div class="link-url">localhost:3001/</div>
+                    <div class="link-url">cake-website-ofys.onrender.com</div>
                     <div class="link-desc">The full Silkoven bakery site</div>
                 </div>
             </a>
-            <a href="http://localhost:3001/login.html" target="_blank" class="link-card badge-rose">
+            <a href="https://cake-website-ofys.onrender.com/login.html" target="_blank" class="link-card badge-rose">
                 <span class="link-ico">🔐</span>
                 <div>
                     <div class="link-label">Login Page</div>
-                    <div class="link-url">localhost:3001/login.html</div>
+                    <div class="link-url">cake-website-ofys.onrender.com/login.html</div>
                     <div class="link-desc">Sign in · Sign up · WhatsApp OTP</div>
                 </div>
             </a>
-            <a href="http://localhost:3001/api/auth/users" target="_blank" class="link-card badge-blue">
+            <a href="https://cake-website-ofys.onrender.com/api/auth/users" target="_blank"
+                class="link-card badge-blue">
                 <span class="link-ico">👥</span>
                 <div>
                     <div class="link-label">View Users</div>
-                    <div class="link-url">localhost:3001/api/auth/users</div>
+                    <div class="link-url">cake-website-ofys.onrender.com/api/auth/users</div>
                     <div class="link-desc">All registered accounts in db.json</div>
                 </div>
             </a>
-            <a href="http://localhost:3001/api/orders" target="_blank" class="link-card badge-gold">
+            <a href="https://cake-website-ofys.onrender.com/api/orders" target="_blank" class="link-card badge-gold">
                 <span class="link-ico">📦</span>
                 <div>
                     <div class="link-label">View Orders</div>
-                    <div class="link-url">localhost:3001/api/orders</div>
+                    <div class="link-url">cake-website-ofys.onrender.com/api/orders</div>
                     <div class="link-desc">All placed orders saved in db.json</div>
                 </div>
             </a>
-            <a href="http://localhost:3001/api/health" target="_blank" class="link-card badge-purple">
+            <a href="https://cake-website-ofys.onrender.com/api/health" target="_blank" class="link-card badge-purple">
                 <span class="link-ico">💓</span>
                 <div>
                     <div class="link-label">Server Health</div>
-                    <div class="link-url">localhost:3001/api/health</div>
+                    <div class="link-url">cake-website-ofys.onrender.com/api/health</div>
                     <div class="link-desc">Check if backend is running</div>
                 </div>
             </a>
@@ -443,14 +444,13 @@
         </div>
 
         <p style="font-size:.75rem;color:var(--muted);text-align:center;margin-top:1rem;">
-            This dashboard only works when <code
-                style="display:inline;background:none;color:var(--rose);padding:0;border:none;font-size:.75rem;">node server.js</code>
-            is running from the <strong>backend/</strong> folder.
+            Data is fetched live from <code
+                style="display:inline;background:none;color:var(--rose);padding:0;border:none;font-size:.75rem;">https://cake-website-ofys.onrender.com/api</code>
         </p>
     </main>
 
     <script>
-        const API = 'http://localhost:3001/api';
+        const API = 'https://cake-website-ofys.onrender.com/api';
 
         async function checkServer() {
             try {
@@ -460,7 +460,7 @@
                 document.getElementById('statusText').textContent = `✅  Server online — ${d.time}`;
             } catch {
                 document.getElementById('statusDot').className = 'status-dot';
-                document.getElementById('statusText').textContent = '❌  Server offline — run: cd backend && node server.js';
+                document.getElementById('statusText').textContent = '❌  Server offline — check Render dashboard';
             }
         }
 
