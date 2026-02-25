@@ -1,43 +1,70 @@
 /* ===================================================
-   SILKOVEN — Backend API Server
-   Usage: cd backend && node server.js
+   SILKOVEN — Backend API Server (MongoDB Atlas)
+   Usage: node server.js
+   Env:   MONGO_URI, PORT
    =================================================== */
 
 const express = require('express');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const crypto = require('crypto');
-const fs = require('fs');
 const path = require('path');
+const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
 /* ── Config ── */
-const JWT_SECRET = 'silkoven_jwt_secret_demo_2024';
-const DB_PATH = path.join(__dirname, 'db.json');   // backend/db.json
+const JWT_SECRET = process.env.JWT_SECRET || 'silkoven_jwt_secret_demo_2024';
+const MONGO_URI = process.env.MONGO_URI;
+
+/* ── MongoDB Connection ── */
+if (MONGO_URI) {
+    mongoose.connect(MONGO_URI)
+        .then(() => console.log('✅  MongoDB Connected'))
+        .catch(err => console.error('❌  MongoDB error:', err.message));
+} else {
+    console.warn('⚠️   MONGO_URI not set — running without database (no data will be saved)');
+}
+
+/* ── Mongoose Schemas ── */
+const userSchema = new mongoose.Schema({
+    id: { type: String, default: () => uuidv4() },
+    name: String,
+    email: { type: String, lowercase: true, sparse: true },
+    passwordHash: String,
+    phone: { type: String, sparse: true },
+    createdAt: { type: Date, default: Date.now },
+});
+const otpSchema = new mongoose.Schema({
+    phone: String,
+    otp: String,
+    expiresAt: Number,
+});
+const orderSchema = new mongoose.Schema({
+    orderId: String,
+    backendOrderId: String,
+    items: Array,
+    address: String,
+    card: String,
+    paidAt: { type: Date, default: Date.now },
+});
+
+const User = mongoose.models.User || mongoose.model('User', userSchema);
+const OTP = mongoose.models.OTP || mongoose.model('OTP', otpSchema);
+const Order = mongoose.models.Order || mongoose.model('Order', orderSchema);
 
 /* ── Middleware ── */
 app.use(cors());
 app.use(express.json());
+
 // Serve the frontend folder
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
 
 // Admin dashboard
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'admin.html')));
 app.get('/admin.html', (req, res) => res.sendFile(path.join(__dirname, '..', 'frontend', 'admin.html')));
-
-
-/* ── DB Helpers ── */
-function readDB() {
-    try { return JSON.parse(fs.readFileSync(DB_PATH, 'utf-8')); }
-    catch { return { users: [], otps: [], orders: [] }; }
-}
-function writeDB(data) {
-    fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
-}
 
 /* ── JWT Helper ── */
 function makeToken(payload) {
@@ -56,15 +83,12 @@ app.post('/api/auth/register', async (req, res) => {
     if (password.length < 8)
         return res.status(400).json({ success: false, message: 'Password must be at least 8 characters.' });
 
-    const db = readDB();
-    const exists = db.users.find(u => u.email === email.toLowerCase());
+    const exists = await User.findOne({ email: email.toLowerCase() });
     if (exists)
         return res.status(409).json({ success: false, message: 'An account with this email already exists.' });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const user = { id: uuidv4(), name, email: email.toLowerCase(), passwordHash, phone: null, createdAt: new Date().toISOString() };
-    db.users.push(user);
-    writeDB(db);
+    const user = await User.create({ name, email: email.toLowerCase(), passwordHash });
 
     console.log(`[REGISTER] ${name} <${email}>`);
     const token = makeToken({ id: user.id, email: user.email, name: user.name });
@@ -77,8 +101,7 @@ app.post('/api/auth/login', async (req, res) => {
     if (!email || !password)
         return res.status(400).json({ success: false, message: 'Email and password are required.' });
 
-    const db = readDB();
-    const user = db.users.find(u => u.email === email.toLowerCase());
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user)
         return res.status(401).json({ success: false, message: 'No account found with this email.' });
 
@@ -92,7 +115,7 @@ app.post('/api/auth/login', async (req, res) => {
 });
 
 /* POST /api/auth/send-otp */
-app.post('/api/auth/send-otp', (req, res) => {
+app.post('/api/auth/send-otp', async (req, res) => {
     const { phone } = req.body;
     if (!phone || phone.length < 8)
         return res.status(400).json({ success: false, message: 'Please provide a valid phone number.' });
@@ -100,16 +123,9 @@ app.post('/api/auth/send-otp', (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = Date.now() + 5 * 60 * 1000;
 
-    const db = readDB();
-    db.otps = db.otps.filter(o => o.phone !== phone);
-    db.otps.push({ phone, otp, expiresAt });
-    writeDB(db);
+    await OTP.deleteMany({ phone });
+    await OTP.create({ phone, otp, expiresAt });
 
-    /*
-     * ── REAL WhatsApp API STUB ──
-     * Replace with WATI / Twilio call when going live.
-     * For demo: OTP is printed to terminal and returned as demoOtp.
-     */
     console.log(`\n[WHATSAPP OTP] ━━━━━━━━━━━━━━━━━━━━`);
     console.log(`   Phone : ${phone}`);
     console.log(`   OTP   : ${otp}   (valid 5 min)`);
@@ -119,14 +135,12 @@ app.post('/api/auth/send-otp', (req, res) => {
 });
 
 /* POST /api/auth/verify-otp */
-app.post('/api/auth/verify-otp', (req, res) => {
+app.post('/api/auth/verify-otp', async (req, res) => {
     const { phone, otp } = req.body;
     if (!phone || !otp)
         return res.status(400).json({ success: false, message: 'Phone and OTP are required.' });
 
-    const db = readDB();
-    const record = db.otps.find(o => o.phone === phone);
-
+    const record = await OTP.findOne({ phone });
     if (!record)
         return res.status(400).json({ success: false, message: 'OTP not found. Please request a new one.' });
     if (Date.now() > record.expiresAt)
@@ -134,13 +148,12 @@ app.post('/api/auth/verify-otp', (req, res) => {
     if (record.otp !== otp)
         return res.status(400).json({ success: false, message: 'Incorrect OTP. Please try again.' });
 
-    db.otps = db.otps.filter(o => o.phone !== phone);
-    let user = db.users.find(u => u.phone === phone);
+    await OTP.deleteMany({ phone });
+
+    let user = await User.findOne({ phone });
     if (!user) {
-        user = { id: uuidv4(), name: 'Silkoven Member', email: null, passwordHash: null, phone, createdAt: new Date().toISOString() };
-        db.users.push(user);
+        user = await User.create({ name: 'Silkoven Member', phone });
     }
-    writeDB(db);
 
     console.log(`[OTP VERIFIED] ${phone}`);
     const token = makeToken({ id: user.id, phone: user.phone, name: user.name });
@@ -148,84 +161,72 @@ app.post('/api/auth/verify-otp', (req, res) => {
 });
 
 /* GET /api/auth/users — admin view */
-app.get('/api/auth/users', (req, res) => {
-    const db = readDB();
-    const safe = db.users.map(({ id, name, email, phone, createdAt }) => ({ id, name, email, phone, createdAt }));
-    return res.json({ success: true, count: safe.length, users: safe });
+app.get('/api/auth/users', async (req, res) => {
+    const users = await User.find({}, 'id name email phone createdAt');
+    return res.json({ success: true, count: users.length, users });
 });
 
 /* ==============================================
    PAYMENT ROUTES  (Demo / Mock mode)
    ============================================== */
 
-/*
- * POST /api/payment/create-order
- *
- * DEMO MODE: Returns a mock order instantly without calling Razorpay API.
- * To use real Razorpay:
- *   1. npm install razorpay
- *   2. Replace mock block below with:
- *      const Razorpay = require('razorpay');
- *      const rzp = new Razorpay({ key_id: 'rzp_test_XXX', key_secret: 'YYY' });
- *      const order = await rzp.orders.create({ amount: amount*100, currency, receipt });
- */
+/* POST /api/payment/create-order */
 app.post('/api/payment/create-order', (req, res) => {
     const { amount, currency = 'INR' } = req.body;
     if (!amount || amount < 1)
         return res.status(400).json({ success: false, message: 'Invalid amount.' });
 
-    // Mock order — works instantly without Razorpay account
     const mockOrderId = 'order_demo_' + Date.now();
     console.log(`[PAYMENT] Demo order created: ${mockOrderId} — ₹${amount}`);
 
     return res.json({
         success: true,
         orderId: mockOrderId,
-        amount: amount,
+        amount,
         currency,
-        demoMode: true,   // <-- tells frontend to show demo payment UI
+        demoMode: true,
     });
 });
 
 /* POST /api/payment/verify */
-app.post('/api/payment/verify', (req, res) => {
+app.post('/api/payment/verify', async (req, res) => {
     const { orderId, cartItems, address, demoCard } = req.body;
 
-    // Save order to DB
-    const db = readDB();
     const ordCode = 'SLK-' + Math.random().toString(36).substr(2, 6).toUpperCase();
-    db.orders.push({
+    await Order.create({
         orderId: ordCode,
         backendOrderId: orderId,
         items: cartItems || [],
         address: address || '',
         card: demoCard || 'demo',
-        paidAt: new Date().toISOString(),
     });
-    writeDB(db);
 
-    console.log(`[ORDER PLACED] ${ordCode} | ${cartItems?.length || 0} item(s) | ₹${cartItems?.reduce((s, c) => s + c.price * (c.qty || 1), 0) || 0}`);
+    console.log(`[ORDER PLACED] ${ordCode} | ${cartItems?.length || 0} item(s)`);
     return res.json({ success: true, message: 'Payment confirmed! Your order is being baked.', orderId: ordCode });
 });
 
 /* GET /api/orders — view all orders */
-app.get('/api/orders', (req, res) => {
-    const db = readDB();
-    return res.json({ success: true, count: db.orders.length, orders: db.orders });
+app.get('/api/orders', async (req, res) => {
+    const orders = await Order.find().sort({ paidAt: -1 });
+    return res.json({ success: true, count: orders.length, orders });
 });
 
 /* Health check */
-app.get('/api/health', (req, res) => res.json({ status: 'ok', server: 'Silkoven API v2', time: new Date().toISOString() }));
+app.get('/api/health', (req, res) => res.json({
+    status: 'ok',
+    server: 'Silkoven API v3 (MongoDB)',
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    time: new Date().toISOString(),
+}));
 
 /* ── Start ── */
 app.listen(PORT, () => {
     console.log(`\n🎂  Silkoven Backend running!`);
     console.log(`    ─────────────────────────────────────────────`);
     console.log(`    🌐  Main Website   →  http://localhost:${PORT}/`);
-    console.log(`    🔐  Login Page     →  http://localhost:${PORT}/login.html`);
     console.log(`    👥  View Users     →  http://localhost:${PORT}/api/auth/users`);
     console.log(`    📦  View Orders    →  http://localhost:${PORT}/api/orders`);
     console.log(`    💓  Health Check   →  http://localhost:${PORT}/api/health`);
     console.log(`    ─────────────────────────────────────────────`);
-    console.log(`    Mode: DEMO (mock payments, no Razorpay keys needed)\n`);
+    console.log(`    Mode: DEMO (mock payments, MongoDB storage)\n`);
 });
