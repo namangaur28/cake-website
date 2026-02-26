@@ -47,6 +47,38 @@
       "passwordHash": "$2a$10$MDOY6GF62DS89VXUdZE7qOhR1iQB9DL/2mqppT6fTQutH8BcRyUU2",
       "phone": null,
       "createdAt": "2026-02-25T10:07:54.486Z"
+    },
+    {
+      "id": "d19462fc-60cb-42da-ab21-a5498d36f767",
+      "name": "Silkoven Member",
+      "email": null,
+      "passwordHash": null,
+      "phone": "+916375059171",
+      "createdAt": "2026-02-25T10:55:47.538Z"
+    },
+    {
+      "id": "eb80e942-40ef-4af5-91f6-1c402498ebf7",
+      "name": "naan",
+      "email": "gaur@41gmail.com",
+      "passwordHash": "$2a$10$qAOhAA7E7Q2UoAKbWD.e..qLov4/p6BVXUDYok1OBqwRvGmn2BaDS",
+      "phone": null,
+      "createdAt": "2026-02-25T10:56:18.265Z"
+    },
+    {
+      "id": "9bfee81a-4a37-4098-969b-c3a9de454002",
+      "name": "namangauurjs",
+      "email": "nama@gmail.com",
+      "passwordHash": "$2a$10$a8DgxvMIwYcpMasJSzP/EOMDOM4fmaGT7FQkGVCa6w8JkCpZWJEri",
+      "phone": null,
+      "createdAt": "2026-02-25T11:03:58.139Z"
+    },
+    {
+      "id": "8971f7da-8ff9-41c7-a51a-34a806fc866a",
+      "name": "namana",
+      "email": "gaurjsj@gmail.com",
+      "passwordHash": "$2a$10$7OyVOL1m0F4XUWKp9w9/eO61OoX8tegDw4ho53.pgkydzTM0tf1T.",
+      "phone": null,
+      "createdAt": "2026-02-25T11:18:57.323Z"
     }
   ],
   "otps": [
