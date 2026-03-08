@@ -47,7 +47,8 @@ const orderSchema = new mongoose.Schema({
     backendOrderId: String,
     items: Array,
     address: String,
-    instructions: String,   // special add-on instructions from builder
+    instructions: String,        // special add-on instructions from builder
+    customizationData: mongoose.Schema.Types.Mixed,  // full 3D builder config per order
     card: String,
     paidAt: { type: Date, default: Date.now },
 });
@@ -203,6 +204,11 @@ app.post('/api/payment/verify', async (req, res) => {
     const instr = instructions ||
         (cartItems || []).map(i => i.instructions).filter(Boolean).join('; ') || '';
 
+    // Extract customization data from cart items (for 3D builder cakes)
+    const customizationData = (cartItems || [])
+        .filter(i => i.customization)
+        .map(i => ({ itemId: i.id, itemName: i.name, customization: i.customization }));
+
     const ordCode = 'SLK-' + Math.random().toString(36).substr(2, 6).toUpperCase();
     await Order.create({
         orderId: ordCode,
@@ -210,6 +216,7 @@ app.post('/api/payment/verify', async (req, res) => {
         items: cartItems || [],
         address: address || '',
         instructions: instr,
+        customizationData: customizationData.length ? customizationData : null,
         card: demoCard || 'demo',
     });
 

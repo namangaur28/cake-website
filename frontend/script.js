@@ -957,6 +957,26 @@ document.addEventListener('DOMContentLoaded', () => {
     updateGamHUD();
     renderShop();
 
+    /* ── Pick up custom cake from 3D builder page ── */
+    try {
+        const pendingCustom = localStorage.getItem('sk_custom_pending');
+        if (pendingCustom) {
+            const customItem = JSON.parse(pendingCustom);
+            // Avoid duplicate if already in cart
+            if (!cart.some(c => c.id === customItem.id)) {
+                cart.push(customItem);
+                updateCartBadge();
+                document.getElementById('orderBtn').disabled = false;
+                // Open cart drawer after a small delay to let page load
+                setTimeout(() => openCart(), 600);
+                addPoints(30, 'Created a custom cake!');
+                unlockAchievement('builder');
+                showPtsToast('Custom cake added to cart! 🎂');
+            }
+            localStorage.removeItem('sk_custom_pending');
+        }
+    } catch (e) { }
+
     /* ── Show logged-in user in navbar ── */
     const skUser = localStorage.getItem('sk_user');
     const skLoggedIn = localStorage.getItem('sk_loggedIn');

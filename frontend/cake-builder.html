@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Cake Builder — Silkoven</title>
+    <link rel="icon" type="image/jpeg" href="assets/logo.jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Jost:wght@300;400;500;600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+        rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="cake-builder.css" />
+</head>
+
+<body>
+
+    <!-- XP Toast -->
+    <div class="xp-toast" id="xpToast"></div>
+
+    <!-- Achievement Toast -->
+    <div class="ach-toast-cb" id="achToastCb">
+        <span class="ach-ico-cb" id="achIconCb">🏆</span>
+        <div>
+            <div class="ach-title-cb" id="achTitleCb">Achievement!</div>
+            <div class="ach-sub-cb" id="achSubCb">You did it!</div>
+        </div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="cb-nav" id="cbNav">
+        <a href="index.html" class="cb-back-btn">
+            <span>←</span> Back to Shop
+        </a>
+        <div class="cb-nav-brand">
+            <img src="assets/logo.jpeg" alt="Silkoven" class="cb-logo" />
+            <span class="cb-brand-name">Silk<em>oven</em> <span class="cb-builder-tag">3D Builder</span></span>
+        </div>
+        <div class="cb-nav-right">
+            <div class="cb-xp-hud" title="Your XP">
+                <span class="cb-xp-label" id="xpLabel">0 XP</span>
+                <div class="cb-xp-bar-wrap">
+                    <div class="cb-xp-bar" id="xpBar"></div>
+                </div>
+                <span class="cb-xp-level" id="xpLevel">Lv.1</span>
+            </div>
+            <!-- ✨ FEATURE 1: Surprise Me button -->
+            <button class="cb-surprise-btn" id="surpriseBtn" onclick="surpriseMe()" title="Randomize everything!">
+                🌟 Surprise Me!
+            </button>
+            <button class="cb-theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle dark/light mode">
+                🌙
+            </button>
+            <button class="cb-cart-pill" id="cartPill" onclick="window.location.href='index.html#cart'">
+                🛒 <span id="cbCartCount">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MAIN LAYOUT -->
+    <main class="cb-main">
+
+        <!-- LEFT: Step Wizard -->
+        <aside class="cb-sidebar" id="cbSidebar">
+
+            <!-- Progress Bar -->
+            <div class="cb-progress-wrap">
+                <div class="cb-progress-steps" id="progressSteps">
+                    <!-- injected by JS -->
+                </div>
+                <div class="cb-progress-bar-track">
+                    <div class="cb-progress-bar-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Step Panels -->
+            <div class="cb-steps-container" id="stepsContainer">
+
+                <!-- STEP 1: Tiers -->
+                <div class="cb-step-panel active" id="step-panel-1">
+                    <div class="cb-step-header">
+                        <div class="cb-step-num">01</div>
+                        <div>
+                            <div class="cb-step-title">🎂 Choose Your Tiers</div>
+                            <div class="cb-step-sub">How many layers will your masterpiece have?</div>
+                        </div>
+                    </div>
+                    <div class="tier-cards" id="tierCards">
+                        <div class="tier-card active" onclick="selectTiers(1, this)" data-tiers="1">
+                            <div class="tier-card-icon">🎂</div>
+                            <div class="tier-card-name">Single Tier</div>
+                            <div class="tier-card-desc">Perfect for intimate celebrations</div>
+                            <div class="tier-card-price">From ₹1,200</div>
+                        </div>
+                        <div class="tier-card" onclick="selectTiers(2, this)" data-tiers="2">
+                            <div class="tier-card-icon">🎂🎂</div>
+                            <div class="tier-card-name">Two Tiers</div>
+                            <div class="tier-card-desc">Classic elegance for any event</div>
+                            <div class="tier-card-price">From ₹1,550</div>
+                        </div>
+                        <div class="tier-card" onclick="selectTiers(3, this)" data-tiers="3">
+                            <div class="tier-card-icon">👑</div>
+                            <div class="tier-card-name">Three Tiers</div>
+                            <div class="tier-card-desc">Grand statement for big moments</div>
+                            <div class="tier-card-price">From ₹1,900</div>
+                        </div>
+                    </div>
+                    <!-- Shape removed: round only -->
+                    <button class="cb-next-btn" onclick="goToStep(2)">Next: Pick Flavors →</button>
+                </div>
+
+                <!-- STEP 2: Flavors -->
+                <div class="cb-step-panel" id="step-panel-2">
+                    <div class="cb-step-header">
+                        <div class="cb-step-num">02</div>
+                        <div>
+                            <div class="cb-step-title">🍓 Choose Flavors</div>
+                            <div class="cb-step-sub">Select a flavor for each tier</div>
+                        </div>
+                    </div>
+                    <div class="flavor-tiers-wrap" id="flavorTiersWrap">
+                        <!-- dynamically populated -->
+                    </div>
+                    <div class="cb-nav-btns">
+                        <button class="cb-back-step-btn" onclick="goToStep(1)">← Back</button>
+                        <button class="cb-next-btn" onclick="goToStep(3)">Next: Customize →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 3: Customize -->
+                <div class="cb-step-panel" id="step-panel-3">
+                    <div class="cb-step-header">
+                        <div class="cb-step-num">03</div>
+                        <div>
+                            <div class="cb-step-title">🎨 Customize Each Tier</div>
+                            <div class="cb-step-sub">Adjust size, color, frosting & texture</div>
+                        </div>
+                    </div>
+                    <!-- Tier selector tabs -->
+                    <div class="tier-tabs" id="tierTabs"></div>
+                    <!-- Per-tier customize panel -->
+                    <div id="customizePanel"></div>
+                    <div class="cb-nav-btns">
+                        <button class="cb-back-step-btn" onclick="goToStep(2)">← Back</button>
+                        <button class="cb-next-btn" onclick="goToStep(4)">Next: Decorations →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 4: Decorations -->
+                <div class="cb-step-panel" id="step-panel-4">
+                    <div class="cb-step-header">
+                        <div class="cb-step-num">04</div>
+                        <div>
+                            <div class="cb-step-title">✨ Add Decorations</div>
+                            <div class="cb-step-sub">Top your cake with delightful extras</div>
+                        </div>
+                    </div>
+                    <div class="decos-grid" id="decosGrid">
+                        <div class="deco-card" id="deco-cherries" onclick="toggleDeco('cherries', this)">
+                            <div class="deco-icon">🍒</div>
+                            <div class="deco-name">Cherries</div>
+                            <div class="deco-price">+₹99</div>
+                            <div class="deco-qty" id="deco-cherries-qty" style="display:none">
+                                <button onclick="event.stopPropagation();changeDeco('cherries',-1)">−</button>
+                                <span id="cherries-count">1</span>
+                                <button onclick="event.stopPropagation();changeDeco('cherries',1)">+</button>
+                            </div>
+                        </div>
+                        <div class="deco-card" id="deco-candles" onclick="toggleDeco('candles', this)">
+                            <div class="deco-icon">🕯️</div>
+                            <div class="deco-name">Candles</div>
+                            <div class="deco-price">+₹49 each</div>
+                            <div class="deco-qty" id="deco-candles-qty" style="display:none">
+                                <button onclick="event.stopPropagation();changeDeco('candles',-1)">−</button>
+                                <span id="candles-count">1</span>
+                                <button onclick="event.stopPropagation();changeDeco('candles',1)">+</button>
+                            </div>
+                        </div>
+                        <div class="deco-card" id="deco-sprinkles" onclick="toggleDeco('sprinkles', this)">
+                            <div class="deco-icon">🌈</div>
+                            <div class="deco-name">Sprinkles</div>
+                            <div class="deco-price">+₹79</div>
+                        </div>
+                        <div class="deco-card" id="deco-macarons" onclick="toggleDeco('macarons', this)">
+                            <div class="deco-icon">🍬</div>
+                            <div class="deco-name">Macarons</div>
+                            <div class="deco-price">+₹249</div>
+                        </div>
+                        <div class="deco-card" id="deco-chocolateShards" onclick="toggleDeco('chocolateShards', this)">
+                            <div class="deco-icon">🍫</div>
+                            <div class="deco-name">Choco Shards</div>
+                            <div class="deco-price">+₹179</div>
+                        </div>
+                        <div class="deco-card" id="deco-berryMix" onclick="toggleDeco('berryMix', this)">
+                            <div class="deco-icon">🫐</div>
+                            <div class="deco-name">Berry Mix</div>
+                            <div class="deco-price">+₹129</div>
+                        </div>
+                    </div>
+                    <div class="cb-nav-btns">
+                        <button class="cb-back-step-btn" onclick="goToStep(3)">← Back</button>
+                        <button class="cb-next-btn" onclick="goToStep(5)">Next: Review →</button>
+                    </div>
+
+                    <!-- 🔥 FEATURE 2: Calorie Estimator -->
+                    <div class="feature-widget calorie-widget" id="calorieWidget">
+                        <div class="fw-header">
+                            <span class="fw-icon">🔥</span>
+                            <span class="fw-title">Calorie Estimator</span>
+                            <span class="fw-badge">FUN STAT</span>
+                        </div>
+                        <div class="fw-body">
+                            <div class="calorie-display">
+                                <span class="calorie-num" id="calorieNum">0</span>
+                                <span class="calorie-unit">kcal est.</span>
+                            </div>
+                            <div class="calorie-bar-wrap">
+                                <div class="calorie-bar" id="calorieBar"></div>
+                            </div>
+                            <div class="calorie-label" id="calorieLabel">Guilt-free indulgence 😊</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STEP 5: Review -->
+                <div class="cb-step-panel" id="step-panel-5">
+                    <div class="cb-step-header">
+                        <div class="cb-step-num">05</div>
+                        <div>
+                            <div class="cb-step-title">📋 Review &amp; Order</div>
+                            <div class="cb-step-sub">Almost there — finalize your creation!</div>
+                        </div>
+                    </div>
+
+                    <!-- Special instructions only -->
+                    <div class="cb-field-group">
+                        <label class="cb-label">📝 Special Instructions</label>
+                        <textarea class="cb-textarea" id="instructionsInput" rows="3" maxlength="300"
+                            placeholder="Dairy-free frosting, extra sprinkles, specific theme, allergy info…"
+                            oninput="updateInstructions()"></textarea>
+                    </div>
+
+                    <!-- Summary card -->
+                    <div class="review-card" id="reviewCard"></div>
+
+                    <!-- 🍰 FEATURE 3: Serving Size Calculator -->
+                    <div class="feature-widget serving-widget">
+                        <div class="fw-header">
+                            <span class="fw-icon">🍰</span>
+                            <span class="fw-title">Serving Size</span>
+                            <span class="fw-badge">SMART CALC</span>
+                        </div>
+                        <div class="fw-body">
+                            <div class="serving-row">
+                                <label class="serving-label">Guests</label>
+                                <div class="serving-control">
+                                    <button class="srv-btn" onclick="changeGuests(-5)">−</button>
+                                    <span class="srv-count" id="guestCount">10</span>
+                                    <button class="srv-btn" onclick="changeGuests(5)">+</button>
+                                </div>
+                            </div>
+                            <div class="serving-result" id="servingResult">This cake perfectly feeds <strong>10</strong>
+                                guests 🎉</div>
+                        </div>
+                    </div>
+
+                    <div class="cb-nav-btns">
+                        <button class="cb-back-step-btn" onclick="goToStep(4)">← Back</button>
+                    </div>
+                </div>
+
+            </div><!-- /steps -->
+        </aside>
+
+        <!-- RIGHT: 3D Canvas + Price Bar -->
+        <section class="cb-canvas-section">
+            <div class="cb-canvas-wrap" id="cbCanvasWrap">
+                <canvas id="builder3d" tabindex="0"></canvas>
+                <div class="cb-canvas-hint">🖱 Drag to rotate • Scroll to zoom • Pinch on mobile</div>
+                <div class="cb-snap-flash" id="snapFlash"></div>
+                <!-- Step badge -->
+                <div class="cb-step-badge" id="stepBadge">Step 1 of 5</div>
+            </div>
+
+            <!-- Price + CTA bar -->
+            <div class="cb-price-bar">
+                <div class="cb-price-info">
+                    <div class="cb-price-total" id="cbPrice">₹1,200</div>
+                    <div class="cb-price-break" id="cbPriceBreak"></div>
+                </div>
+                <div class="cb-cta-area">
+                    <button class="cb-download-btn" onclick="takeSnapshot()" title="Export 3D Image">📸 Save</button>
+                    <button class="cb-ar-btn" onclick="launchAR()" title="View in AR" id="arBtn">🥽 AR</button>
+                    <button class="cb-addcart-btn" id="addCartBtn" onclick="addToCartAndRedirect()">
+                        <span class="btn-icon">🛒</span>
+                        Add to Cart
+                    </button>
+                </div>
+            </div>
+
+            <!-- 🎨 FEATURE 4: Cake Mood Board (Color Palette Inspiration) -->
+            <div class="mood-board" id="moodBoard">
+                <div class="mood-board-title">🎨 Mood Board</div>
+                <div class="mood-palettes" id="moodPalettes">
+                    <button class="mood-pal" onclick="applyMood('romance')" title="Romance">
+                        <span class="mood-swatches">
+                            <i style="background:#f48fb1"></i><i style="background:#e91e63"></i><i
+                                style="background:#ce93d8"></i>
+                        </span>
+                        <span class="mood-name">🌹 Romance</span>
+                    </button>
+                    <button class="mood-pal" onclick="applyMood('tropical')" title="Tropical">
+                        <span class="mood-swatches">
+                            <i style="background:#ffcc02"></i><i style="background:#ff7043"></i><i
+                                style="background:#66bb6a"></i>
+                        </span>
+                        <span class="mood-name">🌴 Tropical</span>
+                    </button>
+                    <button class="mood-pal" onclick="applyMood('midnight')" title="Midnight">
+                        <span class="mood-swatches">
+                            <i style="background:#3949ab"></i><i style="background:#7c4dff"></i><i
+                                style="background:#9c27b0"></i>
+                        </span>
+                        <span class="mood-name">🌌 Midnight</span>
+                    </button>
+                    <button class="mood-pal" onclick="applyMood('forest')" title="Forest">
+                        <span class="mood-swatches">
+                            <i style="background:#558b2f"></i><i style="background:#795548"></i><i
+                                style="background:#a5d6a7"></i>
+                        </span>
+                        <span class="mood-name">🌲 Forest</span>
+                    </button>
+                    <button class="mood-pal" onclick="applyMood('ocean')" title="Ocean">
+                        <span class="mood-swatches">
+                            <i style="background:#0288d1"></i><i style="background:#80deea"></i><i
+                                style="background:#b2ebf2"></i>
+                        </span>
+                        <span class="mood-name">🌊 Ocean</span>
+                    </button>
+                    <button class="mood-pal" onclick="applyMood('golden')" title="Golden Hour">
+                        <span class="mood-swatches">
+                            <i style="background:#f9a825"></i><i style="background:#ff6f00"></i><i
+                                style="background:#ffcc80"></i>
+                        </span>
+                        <span class="mood-name">✨ Golden</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- CONFETTI CONTAINER -->
+    <div id="confettiContainer"></div>
+
+    <script src="cake-builder.js"></script>
+</body>
+
+</html>
