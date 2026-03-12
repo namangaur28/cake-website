@@ -231,6 +231,13 @@ app.get('/api/orders', async (req, res) => {
     return res.json({ success: true, count: orders.length, orders });
 });
 
+/* GET /api/orders/:id — track single order */
+app.get('/api/orders/:id', async (req, res) => {
+    const order = await Order.findOne({ orderId: req.params.id });
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found' });
+    return res.json({ success: true, order });
+});
+
 /* PATCH /api/orders/:id/status — update order status (chef) */
 app.patch('/api/orders/:id/status', async (req, res) => {
     const { status } = req.body;

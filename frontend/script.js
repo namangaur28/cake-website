@@ -537,12 +537,16 @@ function doLogout() {
 }
 
 /* ── TRACKER ── */
-const ORDER_STATUSES = {
-    'SLK-TEST': { status: 'Baking', step: 2, eta: 'Ready by 4:30 PM today' },
-    'SLK-DEMO': { status: 'Out for Delivery', step: 4, eta: 'Arriving in ~30 mins' },
+// Mapping Chef Dashboard statuses to frontend tracker steps
+const STATUS_MAP = {
+    'Pending': { step: 1, eta: 'Reviewing your order...', bg: 'Pending', icon: '📋' },
+    'Prepping': { step: 2, eta: 'Gathering fresh ingredients...', bg: 'Prepping', icon: '🥣' },
+    'Baking': { step: 3, eta: 'Cake is in the oven!', bg: 'Baking', icon: '🔥' },
+    'Ready': { step: 4, eta: 'Ready for pickup / delivery', bg: 'Ready', icon: '✨' },
+    'Completed': { step: 5, eta: 'Completed', bg: 'Completed', icon: '✅' }
 };
-
-const STEPS = ['Confirmed', 'Prepping', 'Baking', 'Quality Check', 'Out for Delivery', 'Delivered'];
+const STEPS = ['Pending', 'Prepping', 'Baking', 'Ready', 'Completed'];
+const STEP_ICONS = ['📋', '🥣', '🔥', '✨', '✅'];
 
 function openTracker() {
     if (loggedIn) {
@@ -553,47 +557,76 @@ function openTracker() {
 }
 function closeTracker() { closeOverlay('trackerOverlay'); }
 
-function trackOrder() {
+async function trackOrder() {
     const id = document.getElementById('trackInput').value.trim();
     if (!id) { showPtsToast('Please enter an Order ID'); return; }
-    const order = ORDER_STATUSES[id] || { status: 'Confirmed', step: 1, eta: 'Estimated ready in 24-48 hours' };
+
     document.getElementById('trackerResult').classList.add('hidden');
-    // Show order found popup for 2.5s
+    // Show order found popup (loading state)
     const old = document.getElementById('orderFoundPopup'); if (old) old.remove();
     const p = document.createElement('div');
     p.id = 'orderFoundPopup'; p.className = 'order-found-popup';
-    p.innerHTML = `<div class="ofp-icon">🔍</div><div style="flex:1"><div class="ofp-label">Order Found!</div><div class="ofp-id">${id}</div><div class="ofp-status">${order.status}</div></div><div class="ofp-spinner"></div>`;
+    p.innerHTML = `<div class="ofp-icon">🔍</div><div style="flex:1"><div class="ofp-label">Looking up Order...</div><div class="ofp-id">${id}</div></div><div class="ofp-spinner"></div>`;
     document.querySelector('.tracker-body').appendChild(p);
+
+    // Animation in
     requestAnimationFrame(() => {
-        p.style.opacity = '0';
-        p.style.transform = 'translate(-50%, -50%) scale(0.92)';
+        p.style.opacity = '0'; p.style.transform = 'translate(-50%, -50%) scale(0.92)';
         requestAnimationFrame(() => {
             p.style.transition = 'opacity .3s, transform .3s';
-            p.style.opacity = '1';
-            p.style.transform = 'translate(-50%, -50%) scale(1)';
+            p.style.opacity = '1'; p.style.transform = 'translate(-50%, -50%) scale(1)';
         });
     });
-    setTimeout(() => {
-        p.style.opacity = '0';
-        p.style.transform = 'translate(-50%, -50%) scale(0.92)';
+
+    try {
+        const res = await fetch(`https://cake-website-ofys.onrender.com/api/orders/${id}`);
+        const data = await res.json();
+
+        // Remove popup
+        p.style.opacity = '0'; p.style.transform = 'translate(-50%, -50%) scale(0.92)';
         setTimeout(() => p.remove(), 300);
+
+        if (!data.success) {
+            showPtsToast('Order not found');
+            return;
+        }
+
+        const realStatus = data.order.status || 'Pending';
+        const mapped = STATUS_MAP[realStatus] || STATUS_MAP['Pending'];
+
         const result = document.getElementById('trackerResult');
         result.classList.remove('hidden');
         result.style.opacity = '0'; result.style.transform = 'translateY(10px)';
+
         document.getElementById('tr-id-label').textContent = id;
-        document.getElementById('tr-badge').textContent = order.status;
-        document.getElementById('tr-eta').textContent = order.eta;
-        fireConfetti();
-        const STEP_ICONS = ['📋', '🥚', '🔥', '✅', '🚗', '🎉'];
+        document.getElementById('tr-badge').textContent = realStatus;
+        document.getElementById('tr-eta').textContent = mapped.eta;
+
+        if (realStatus === 'Ready' || realStatus === 'Completed') {
+            fireConfetti();
+        }
+
         document.getElementById('trackSteps').innerHTML = STEPS.map((s, i) => {
-            const done = i < order.step, active = i === order.step - 1;
+            const done = i < mapped.step, active = i === mapped.step - 1;
             return `<div class="step-item"><div class="step-circle ${done ? 'done' : active ? 'active' : ''}">${done ? '✓' : STEP_ICONS[i]}</div><div class="step-label ${done ? 'done' : active ? 'active' : ''}">${s}</div></div>`;
         }).join('');
-        requestAnimationFrame(() => { result.style.transition = 'opacity .45s,transform .45s'; result.style.opacity = '1'; result.style.transform = 'translateY(0)'; });
+
+        requestAnimationFrame(() => {
+            result.style.transition = 'opacity .45s,transform .45s';
+            result.style.opacity = '1'; result.style.transform = 'translateY(0)';
+        });
+
         document.getElementById('trackFill').style.width = '0%';
-        setTimeout(() => { document.getElementById('trackFill').style.width = ((order.step - 1) / Math.max(STEPS.length - 1, 1) * 100) + '%'; }, 120);
-    }, 2500);
+        setTimeout(() => {
+            document.getElementById('trackFill').style.width = ((mapped.step - 1) / Math.max(STEPS.length - 1, 1) * 100) + '%';
+        }, 120);
+
+    } catch (err) {
+        p.remove();
+        showPtsToast('Error connecting to server');
+    }
 }
+
 function toggleWaNotify() {
     const sw = document.getElementById('waNotifySw');
     sw.classList.toggle('on');
