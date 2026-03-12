@@ -2476,7 +2476,18 @@ footer {
     padding: .25rem .8rem;
     border-radius: 20px;
     pointer-events: none;
-    backdrop-filter: blur(4px)
+    backdrop-filter: blur(4px);
+    z-index: 5;
+}
+
+@media (max-width: 768px) {
+    .canvas-hint {
+        font-size: 0.55rem;
+        padding: 0.15rem 0.5rem;
+        bottom: 8px;
+        color: rgba(107, 61, 46, .8);
+        background: rgba(255, 255, 255, .4);
+    }
 }
 
 .ctrl-panel {
@@ -4495,8 +4506,8 @@ footer {
     }
 
     .snap-btn {
-        padding: .35rem .8rem;
-        font-size: .7rem
+        display: none;
+        /* Hide the top one completely to save space */
     }
 
     .canvas-wrap,
