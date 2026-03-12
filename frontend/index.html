@@ -57,6 +57,7 @@
             <a href="login.html" class="nav-login-btn" id="navLoginBtn">Sign In</a>
             <div class="nav-user-pill hidden" id="navUserPill">
                 <span class="nav-user-name" id="navUserName"></span>
+                <button class="nav-user-btn" onclick="openMyOrders()" title="My Orders">📦 My Orders</button>
                 <button class="nav-user-logout" onclick="doLogout()" title="Sign out">↩</button>
             </div>
             <button class="hamburger" id="hamburger"
@@ -700,6 +701,19 @@
                         <div class="wa-sent-bar hidden" id="waSentNote">&#10003; Status sent to your WhatsApp!</div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- ORDERS MODAL -->
+    <div class="overlay" id="ordersOverlay" onclick="if(event.target===this)closeMyOrders()">
+        <div class="tracker-modal" style="max-width: 600px;">
+            <div class="tracker-head">
+                <h3>My <em>Orders</em></h3>
+                <button class="x-btn light" onclick="closeMyOrders()">X</button>
+            </div>
+            <div class="tracker-body" style="background:#f9f9f9; padding:1.5rem; max-height:70vh; overflow-y:auto;"
+                id="myOrdersBody">
+                <div style="text-align:center; padding: 2rem;">Loading orders...</div>
             </div>
         </div>
     </div>

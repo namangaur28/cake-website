@@ -384,6 +384,26 @@ ul {
     color: var(--rose);
 }
 
+.nav-user-btn {
+    background: var(--gold);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 0 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-left: 0.4rem;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s;
+}
+
+.nav-user-btn:hover {
+    background: #c59b43;
+    transform: translateY(-1px);
+}
+
 .address-box {
     padding: 0 1.5rem 1rem;
     border-top: 1px solid var(--border);

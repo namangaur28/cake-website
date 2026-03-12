@@ -45,6 +45,7 @@ const otpSchema = new mongoose.Schema({
 const orderSchema = new mongoose.Schema({
     orderId: String,
     backendOrderId: String,
+    userPhone: String,           // <-- Link to customer account
     items: Array,
     address: String,
     instructions: String,        // special add-on instructions from builder
@@ -199,7 +200,7 @@ app.post('/api/payment/create-order', (req, res) => {
 
 /* POST /api/payment/verify */
 app.post('/api/payment/verify', async (req, res) => {
-    const { orderId, cartItems, address, demoCard, instructions } = req.body;
+    const { orderId, cartItems, address, demoCard, instructions, userPhone } = req.body;
 
     // Also pull instructions from custom cake items if not sent top-level
     const instr = instructions ||
@@ -214,6 +215,7 @@ app.post('/api/payment/verify', async (req, res) => {
     await Order.create({
         orderId: ordCode,
         backendOrderId: orderId,
+        userPhone: userPhone || '',    // Link order to the customer's phone
         items: cartItems || [],
         address: address || '',
         instructions: instr,
@@ -221,13 +223,19 @@ app.post('/api/payment/verify', async (req, res) => {
         card: demoCard || 'demo',
     });
 
-    console.log(`[ORDER PLACED] ${ordCode} | ${cartItems?.length || 0} item(s) | notes: "${instr || 'none'}"`);
+    console.log(`[ORDER PLACED] ${ordCode} | User: ${userPhone} | ${cartItems?.length || 0} item(s)`);
     return res.json({ success: true, message: 'Payment confirmed! Your order is being baked.', orderId: ordCode });
 });
 
 /* GET /api/orders — view all orders */
 app.get('/api/orders', async (req, res) => {
     const orders = await Order.find().sort({ paidAt: -1 });
+    return res.json({ success: true, count: orders.length, orders });
+});
+
+/* GET /api/orders/user/:phone — get all orders for a specific user */
+app.get('/api/orders/user/:phone', async (req, res) => {
+    const orders = await Order.find({ userPhone: req.params.phone }).sort({ paidAt: -1 });
     return res.json({ success: true, count: orders.length, orders });
 });
 

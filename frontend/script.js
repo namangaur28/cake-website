@@ -380,7 +380,7 @@ async function submitPayment() {
     try {
         const res = await fetch(SERVER + '/payment/verify', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderId: oId, cartItems: cart, address: addr, demoCard: card.slice(-4) }),
+            body: JSON.stringify({ orderId: oId, cartItems: cart, address: addr, demoCard: card.slice(-4), userPhone: currentPhone }),
         });
         const data = await res.json();
         completeOrder(data.orderId || oId);
@@ -396,7 +396,12 @@ function completeOrder(orderId) {
     document.getElementById('pm-form').classList.add('hidden');
     document.getElementById('pm-hint').classList.add('hidden');
     document.getElementById('pm-success').classList.remove('hidden');
-    document.getElementById('pm-conf-id').textContent = orderId;
+
+    // Explicitly show the ID and tell user to save it
+    document.getElementById('pm-conf-id').innerHTML = `
+        <span style="font-size:0.9rem; color:var(--muted); display:block; margin-bottom:0.4rem;">Save this Order ID:</span>
+        <span style="font-size:1.6rem; color:var(--gold); font-weight:700; user-select:all; background:rgba(212,175,55,0.1); padding:4px 12px; border-radius:6px;">${orderId}</span>
+    `;
 
     addPoints(150, 'Placed an order!');
     unlockAchievement('order');
@@ -633,6 +638,75 @@ function toggleWaNotify() {
     if (sw.classList.contains('on')) {
         document.getElementById('waSentNote').classList.remove('hidden');
         setTimeout(() => document.getElementById('waSentNote').classList.add('hidden'), 3000);
+    }
+}
+
+/* ── MY ORDERS ── */
+function openMyOrders() {
+    openOverlay('ordersOverlay');
+    fetchMyOrders();
+}
+
+function closeMyOrders() {
+    closeOverlay('ordersOverlay');
+}
+
+async function fetchMyOrders() {
+    const ob = document.getElementById('myOrdersBody');
+    ob.innerHTML = '<div style="text-align:center; padding: 2rem;">Loading your orders...</div>';
+
+    const storedUser = JSON.parse(localStorage.getItem('sk_user') || '{}');
+    const phoneToFetch = storedUser.phone || currentPhone;
+
+    if (!phoneToFetch) {
+        ob.innerHTML = '<div style="text-align:center; padding: 2rem;">Please sign in first to see your orders.</div>';
+        return;
+    }
+
+    try {
+        const res = await fetch(`https://cake-website-ofys.onrender.com/api/orders/user/${phoneToFetch}`);
+        const data = await res.json();
+
+        if (!data.success || !data.orders || data.orders.length === 0) {
+            ob.innerHTML = '<div style="text-align:center; padding: 2rem; color: #888;">You haven\'t placed any orders yet. Time to bake something special!</div>';
+            return;
+        }
+
+        let html = '';
+        data.orders.forEach(o => {
+            const dateStr = new Date(o.paidAt).toLocaleDateString();
+            const timeStr = new Date(o.paidAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            const status = o.status || 'Pending';
+
+            let itemsPreview = (o.items || []).map((i, idx) => {
+                if (idx > 2) return ''; // Only show first 3
+                let badge = i.customization ? ' <span style="font-size:0.65rem; background:#eee; padding:2px 4px; border-radius:4px; color:#555;">3D Custom</span>' : '';
+                return `<li>${i.name} (x${i.qty || 1})${badge}</li>`;
+            }).join('');
+
+            if (o.items && o.items.length > 3) itemsPreview += `<li>...and ${o.items.length - 3} more</li>`;
+            if (!itemsPreview) itemsPreview = '<li>Custom / Shop Items</li>';
+
+            html += `
+                <div style="background: #fff; border: 1px solid #eaeaea; border-radius: 8px; padding: 1.2rem; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.8rem; align-items:center;">
+                        <strong style="font-size:1.05rem;">Order #${o.orderId}</strong>
+                        <span style="font-size:0.8rem; color:#aaa;">${dateStr} ${timeStr}</span>
+                    </div>
+                    <div style="margin-bottom:1rem; font-size:0.9rem;">
+                        <ul style="list-style:none; padding-left:0; line-height:1.6; color:#555;">${itemsPreview}</ul>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid #f0f0f0; padding-top: 1rem;">
+                        <div style="font-size:0.85rem; padding: 4px 10px; border-radius: 20px; background: rgba(212, 175, 55, 0.1); color: #b5883a; font-weight:600;">Status: ${status}</div>
+                        <button onclick="closeMyOrders(); document.getElementById('trackInput').value='${o.orderId}'; openTracker(); trackOrder();" style="background:#1a0e0a; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Jost',sans-serif; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Track Live</button>
+                    </div>
+                </div>
+            `;
+        });
+        ob.innerHTML = html;
+
+    } catch (e) {
+        ob.innerHTML = '<div style="text-align:center; padding: 2rem; color:red;">Failed to load orders. Are you disconnected?</div>';
     }
 }
 
