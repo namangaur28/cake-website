@@ -1792,17 +1792,19 @@ function setupInputControls(canvas) {
     }, { passive: true });
     canvas.addEventListener('touchmove', e => {
         if (e.touches.length === 1 && isDrag) {
+            e.preventDefault();
             rotY += (e.touches[0].clientX - lastX) * 0.012;
             rotX += (e.touches[0].clientY - lastY) * 0.008;
             rotX = Math.max(-0.6, Math.min(0.7, rotX));
             lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
         } else if (e.touches.length === 2 && pinchDist !== null) {
+            e.preventDefault();
             const newDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
             camZ -= (newDist - pinchDist) * 0.04;
             camZ = Math.max(4, Math.min(16, camZ));
             pinchDist = newDist;
         }
-    }, { passive: true });
+    }, { passive: false });
     canvas.addEventListener('touchend', () => { isDrag = false; pinchDist = null; });
 }
 
@@ -1816,7 +1818,32 @@ function takeSnapshot() {
     flash.style.opacity = '0.8';
     setTimeout(() => flash.style.opacity = '0', 180);
     renderer.render(scene, camera);
-    const url = renderer.domElement.toDataURL('image/png');
+
+    // Create watermarked image
+    const src = renderer.domElement;
+    const c = document.createElement('canvas');
+    c.width = src.width; c.height = src.height;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(src, 0, 0);
+
+    // Watermark — bottom-right corner
+    const fontSize = Math.max(14, Math.round(c.width * 0.028));
+    ctx.font = `600 ${fontSize}px 'Jost', 'Segoe UI', sans-serif`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    // Shadow for readability
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillText('SilkOven', c.width - 16, c.height - 12);
+    // Subtext
+    ctx.font = `400 ${Math.round(fontSize * 0.6)}px 'Jost', 'Segoe UI', sans-serif`;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillText('silkoven.in', c.width - 16, c.height - 12 + Math.round(fontSize * 0.7));
+
+    const url = c.toDataURL('image/png');
     const a = document.createElement('a'); a.href = url; a.download = 'silkoven-cake.png'; a.click();
     addXP(30, 'Downloaded cake design');
 }

@@ -1033,19 +1033,19 @@ body {
 
 .cb-canvas-hint {
     position: absolute;
-    bottom: calc(var(--price-bar-h) + 16px);
-    left: 50%;
-    transform: translateX(-50%);
+    top: 14px;
+    left: 14px;
     background: rgba(255, 255, 255, .12);
     backdrop-filter: blur(8px);
     color: rgba(255, 255, 255, .75);
-    font-size: .78rem;
+    font-size: .72rem;
     font-weight: 500;
-    padding: .35rem .9rem;
+    padding: .3rem .8rem;
     border-radius: 50px;
     border: 1px solid rgba(255, 255, 255, .15);
     pointer-events: none;
     letter-spacing: .04em;
+    z-index: 10;
 }
 
 .cb-snap-flash {
@@ -1577,45 +1577,47 @@ body {
     border-radius: 8px;
 }
 
-/* 🎨 Feature 4: Mood Board */
+/* 🎨 Feature 4: Mood Board — positioned at top-right of canvas, above price bar */
 .mood-board {
     position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(10, 7, 18, 0.82);
+    bottom: 14px;
+    right: 14px;
+    left: auto;
+    transform: none;
+    background: rgba(10, 7, 18, 0.88);
     backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50px;
-    padding: 0.6rem 1.2rem;
+    border-radius: 14px;
+    padding: 0.5rem 0.7rem;
     display: flex;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     z-index: 100;
     transition: all 0.3s;
+    max-width: 200px;
 }
 
 .mood-board:hover {
-    background: rgba(10, 7, 18, 0.92);
-    transform: translateX(-50%) translateY(-5px);
+    background: rgba(10, 7, 18, 0.95);
+    transform: translateY(-3px);
 }
 
 .mood-board-title {
-    font-size: 0.72rem;
+    font-size: 0.62rem;
     font-weight: 800;
     color: var(--text3);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
-    padding-right: 1rem;
     white-space: nowrap;
 }
 
 .mood-palettes {
     display: flex;
-    align-items: center;
-    gap: 0.8rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.3rem;
 }
 
 .mood-pal {
@@ -1625,13 +1627,13 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.3rem;
     font-family: 'Jost', sans-serif;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
     transition: all 0.2s;
-    padding: 0.3rem 0.6rem;
-    border-radius: 50px;
+    padding: 0.2rem 0.3rem;
+    border-radius: 8px;
 }
 
 .mood-pal:hover {
@@ -1673,4 +1675,92 @@ body {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+
+/* ── Phone-specific (≤420px) ── */
+@media (max-width: 420px) {
+
+    .cb-canvas-section {
+        height: 360px;
+    }
+
+    .cb-price-bar {
+        flex-direction: column;
+        height: auto;
+        padding: .75rem 1rem;
+        gap: .6rem;
+        align-items: stretch;
+    }
+
+    .cb-price-info {
+        flex-direction: row;
+        align-items: baseline;
+        gap: .5rem;
+    }
+
+    .cb-cta-area {
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .cb-addcart-btn {
+        justify-content: center;
+        padding: .75rem;
+        font-size: .92rem;
+        min-height: 48px;
+    }
+
+    .cb-download-btn {
+        text-align: center;
+        min-height: 44px;
+    }
+
+    .mood-board {
+        display: none;
+    }
+
+    .cb-canvas-hint {
+        bottom: 10px;
+        font-size: .7rem;
+        padding: .25rem .7rem;
+    }
+
+    .cb-steps-container {
+        padding: .8rem .7rem;
+    }
+
+    .flavor-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .decos-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .shape-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .shape-card {
+        padding: 8px 4px;
+        font-size: 0.65rem;
+    }
+
+    .shape-icon {
+        font-size: 1.2rem;
+    }
+
+    .cb-nav {
+        padding: 0 .7rem;
+    }
+
+    .cb-back-btn {
+        font-size: .78rem;
+        padding: .3rem .55rem;
+    }
+
+    .cb-brand-name {
+        font-size: .95rem;
+    }
 }

@@ -50,6 +50,7 @@ const orderSchema = new mongoose.Schema({
     instructions: String,        // special add-on instructions from builder
     customizationData: mongoose.Schema.Types.Mixed,  // full 3D builder config per order
     card: String,
+    status: { type: String, default: 'Pending' }, // 'Pending', 'Prepping', 'Baking', 'Ready', 'Completed'
     paidAt: { type: Date, default: Date.now },
 });
 const messageSchema = new mongoose.Schema({
@@ -228,6 +229,23 @@ app.post('/api/payment/verify', async (req, res) => {
 app.get('/api/orders', async (req, res) => {
     const orders = await Order.find().sort({ paidAt: -1 });
     return res.json({ success: true, count: orders.length, orders });
+});
+
+/* PATCH /api/orders/:id/status — update order status (chef) */
+app.patch('/api/orders/:id/status', async (req, res) => {
+    const { status } = req.body;
+    if (!status) return res.status(400).json({ success: false, message: 'Status is required.' });
+
+    // Find and update
+    const order = await Order.findOneAndUpdate(
+        { orderId: req.params.id },
+        { status },
+        { new: true }
+    );
+    if (!order) return res.status(404).json({ success: false, message: 'Order not found.' });
+
+    console.log(`[CHEF] Order ${order.orderId} status set to: ${status}`);
+    return res.json({ success: true, message: `Status updated to ${status}`, order });
 });
 
 /* ==============================================

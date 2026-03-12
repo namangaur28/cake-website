@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chef Dashboard — Silkoven</title>
+    <link rel="icon" type="image/jpeg" href="../assets/logo.jpeg" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <header class="chef-header">
+        <div class="header-left">
+            <img src="../assets/logo.jpeg" alt="Silkoven" class="chef-logo" />
+            <div>
+                <h1>Silk<em>oven</em> Kitchen</h1>
+                <p>Live Order Dashboard</p>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="status-indicator">
+                <span class="pulse-dot" id="connectionDot"></span>
+                <span id="connectionText">Connecting...</span>
+            </div>
+            <button class="refresh-btn" onclick="fetchOrders()">⟳ Refresh</button>
+        </div>
+    </header>
+
+    <main class="kanban-board">
+        <!-- PENDING COLUMN -->
+        <div class="kanban-col" id="col-Pending" data-status="Pending">
+            <div class="col-header">
+                <h3>📝 Pending</h3>
+                <span class="col-count">0</span>
+            </div>
+            <div class="col-body"></div>
+        </div>
+
+        <!-- PREPPING COLUMN -->
+        <div class="kanban-col" id="col-Prepping" data-status="Prepping">
+            <div class="col-header">
+                <h3>🥣 Prepping</h3>
+                <span class="col-count">0</span>
+            </div>
+            <div class="col-body"></div>
+        </div>
+
+        <!-- BAKING COLUMN -->
+        <div class="kanban-col" id="col-Baking" data-status="Baking">
+            <div class="col-header">
+                <h3>🔥 Baking</h3>
+                <span class="col-count">0</span>
+            </div>
+            <div class="col-body"></div>
+        </div>
+
+        <!-- READY COLUMN -->
+        <div class="kanban-col" id="col-Ready" data-status="Ready">
+            <div class="col-header">
+                <h3>✨ Ready</h3>
+                <span class="col-count">0</span>
+            </div>
+            <div class="col-body"></div>
+        </div>
+
+        <!-- COMPLETED COLUMN -->
+        <div class="kanban-col" id="col-Completed" data-status="Completed">
+            <div class="col-header">
+                <h3>✅ Completed</h3>
+                <span class="col-count">0</span>
+            </div>
+            <div class="col-body"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

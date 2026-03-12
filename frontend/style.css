@@ -2711,22 +2711,26 @@ footer {
 }
 
 .add-cart-btn {
-    background: var(--bark);
+    background: linear-gradient(135deg, var(--gold), #b89530);
     color: #fff;
     border: none;
     border-radius: 12px;
     padding: .8rem;
     font-family: 'Jost', sans-serif;
     font-size: .82rem;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: .5px;
+    text-transform: uppercase;
     cursor: pointer;
-    transition: all .2s;
-    width: 100%
+    transition: all .25s;
+    width: 100%;
+    box-shadow: 0 4px 18px rgba(212, 175, 55, .3)
 }
 
 .add-cart-btn:hover {
-    background: var(--rose);
-    transform: translateY(-1px)
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(212, 175, 55, .45);
+    background: linear-gradient(135deg, #e0c040, #b08e4a)
 }
 
 .dl-btn {
@@ -4253,4 +4257,419 @@ footer {
 
 .pay-order-id strong {
     color: var(--bark);
+}
+
+/* ══════════════════════════════════════════
+   MOBILE PHONE — Comprehensive UI/UX
+   ══════════════════════════════════════════ */
+
+/* ── Phone-specific (≤480px) ── */
+@media(max-width:480px) {
+
+    /* Navbar compact */
+    #navbar {
+        padding: .6rem .8rem
+    }
+
+    .nav-icon-btn {
+        font-size: .85rem;
+        padding: .3rem .45rem
+    }
+
+    .badge {
+        font-size: .6rem;
+        min-width: 14px;
+        height: 14px
+    }
+
+    .nav-login-btn {
+        font-size: .72rem;
+        padding: .35rem .7rem
+    }
+
+    /* Hero compact */
+    .hero {
+        padding: 5rem 1rem 2rem
+    }
+
+    .hero h1 {
+        font-size: clamp(2rem, 8vw, 3rem)
+    }
+
+    .hero-sub {
+        font-size: .92rem
+    }
+
+    .hero-ctas {
+        gap: .7rem;
+        margin-bottom: 1.5rem
+    }
+
+    .btn-primary,
+    .btn-outline {
+        padding: .75rem 1.5rem;
+        font-size: .76rem;
+        letter-spacing: 1px
+    }
+
+    .hero-stats {
+        gap: .8rem
+    }
+
+    .stat strong {
+        font-size: 1.1rem
+    }
+
+    /* Marquee smaller */
+    .marquee-strip {
+        padding: .45rem 0
+    }
+
+    .marquee-track {
+        font-size: .65rem;
+        gap: 1.2rem
+    }
+
+    /* Section divider */
+    .section-divider {
+        font-size: .62rem;
+        padding: .55rem 0
+    }
+
+    /* Shop section */
+    #shop .sec-header h2 {
+        font-size: clamp(1.4rem, 5vw, 2rem)
+    }
+
+    .shop-controls {
+        padding: 0 .8rem
+    }
+
+    /* Filter row: horizontally scrollable */
+    .filter-row {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        padding-bottom: .3rem;
+        gap: .35rem
+    }
+
+    .filter-row::-webkit-scrollbar {
+        display: none
+    }
+
+    .f-btn {
+        flex-shrink: 0;
+        padding: .35rem .8rem;
+        font-size: .7rem
+    }
+
+    /* Cake grid */
+    .cake-grid {
+        gap: 1.2rem;
+        padding: 0 .8rem
+    }
+
+    /* Features strip: single column */
+    .feat-inner {
+        grid-template-columns: 1fr;
+        gap: 1rem
+    }
+
+    .feat-ico {
+        font-size: 1.5rem
+    }
+
+    .feat-item strong {
+        font-size: .8rem
+    }
+
+    /* Builder promo compact */
+    .builder-promo {
+        padding: 3rem 1rem
+    }
+
+    .promo-box h2 {
+        font-size: clamp(1.4rem, 5vw, 2rem)
+    }
+
+    .promo-box p {
+        font-size: .85rem
+    }
+
+    .promo-tags {
+        gap: .4rem
+    }
+
+    .promo-tags span {
+        font-size: .68rem;
+        padding: .3rem .6rem
+    }
+
+    .open-builder-btn {
+        padding: .8rem 1.8rem;
+        font-size: .8rem
+    }
+
+    /* About section */
+    .about-section {
+        padding: 3rem 1rem
+    }
+
+    .about-text h2 {
+        font-size: clamp(1.5rem, 5vw, 2rem)
+    }
+
+    .about-card {
+        padding: 1.2rem
+    }
+
+    /* Testimonials */
+    .testi-section {
+        padding: 3rem 1rem
+    }
+
+    .testi-card {
+        padding: 1.3rem
+    }
+
+    /* Contact */
+    .contact-section {
+        padding: 3rem 1rem
+    }
+
+    .contact-h2 {
+        font-size: clamp(1.4rem, 5vw, 2rem)
+    }
+
+    .c-card {
+        padding: 1rem;
+        border-radius: 14px
+    }
+
+    /* Footer */
+    footer {
+        padding: 1.5rem 1rem
+    }
+
+    .foot-links {
+        gap: .8rem;
+        font-size: .72rem
+    }
+
+    /* ── BUILDER MODAL — Full screen on phone ── */
+    .bldr-modal {
+        border-radius: 0;
+        max-height: 100vh;
+        height: 100vh;
+        max-width: 100%
+    }
+
+    .bldr-head {
+        padding: .8rem 1rem
+    }
+
+    .bldr-head h3 {
+        font-size: 1.05rem
+    }
+
+    .snap-btn {
+        padding: .35rem .8rem;
+        font-size: .7rem
+    }
+
+    .canvas-wrap,
+    #cake3d-canvas {
+        height: 260px
+    }
+
+    .ctrl-panel {
+        padding: 1rem;
+        gap: .9rem;
+        border-left: none;
+        border-top: 1px solid var(--border)
+    }
+
+    .ctrl-lbl {
+        font-size: .68rem
+    }
+
+    .layer-colour-btn {
+        padding: .45rem .65rem;
+        font-size: .74rem
+    }
+
+    .tier-btn {
+        padding: .45rem;
+        font-size: .75rem
+    }
+
+    .font-selector {
+        grid-template-columns: repeat(3, 1fr);
+        gap: .3rem
+    }
+
+    .font-btn {
+        padding: .35rem .2rem;
+        font-size: .68rem
+    }
+
+    .insc-input {
+        padding: .45rem .65rem;
+        font-size: .78rem
+    }
+
+    .instr-input {
+        padding: .45rem .65rem;
+        font-size: .76rem
+    }
+
+    .topping-row {
+        padding: .55rem .7rem
+    }
+
+    .price-box {
+        padding: .8rem;
+        border-radius: 10px
+    }
+
+    .price-val {
+        font-size: 1.4rem
+    }
+
+    .add-cart-btn {
+        padding: .85rem;
+        font-size: .8rem;
+        min-height: 48px
+    }
+
+    .dl-btn {
+        padding: .6rem;
+        font-size: .74rem;
+        min-height: 44px
+    }
+
+    /* ── Quick view modal ── */
+    .qv-modal {
+        border-radius: 16px;
+        max-width: 100%;
+        width: 96%
+    }
+
+    /* ── Auth modal ── */
+    .auth-modal {
+        border-radius: 18px;
+        padding: 1.5rem;
+        max-width: 100%;
+        width: 96%
+    }
+
+    .auth-brand {
+        margin-bottom: 1rem
+    }
+
+    .auth-step h3 {
+        font-size: 1.2rem
+    }
+
+    .otp-box {
+        width: 38px;
+        height: 44px;
+        font-size: 1.1rem
+    }
+
+    /* ── Payment modal ── */
+    .pay-modal {
+        border-radius: 18px;
+        max-width: 100%;
+        width: 96%
+    }
+
+    .pay-header {
+        padding: 1rem
+    }
+
+    .pay-fgrp label {
+        font-size: .7rem
+    }
+
+    .pay-fgrp input {
+        font-size: .84rem;
+        padding: .65rem .8rem
+    }
+
+    .pay-btn {
+        min-height: 48px
+    }
+
+    /* ── Tracker modal ── */
+    .tracker-modal {
+        border-radius: 18px;
+        max-width: 100%;
+        width: 96%
+    }
+
+    /* ── Drawers — full width ── */
+    .drawer {
+        width: 100%;
+        max-width: 100%
+    }
+
+    .drw-head h3 {
+        font-size: 1.05rem
+    }
+
+    .cart-foot {
+        padding: .8rem 1rem
+    }
+
+    .order-btn {
+        min-height: 48px;
+        font-size: .85rem
+    }
+
+    /* ── Gamification panel ── */
+    .gam-panel {
+        width: 95%;
+        max-width: 100%
+    }
+}
+
+/* ── Small phone (≤360px) ── */
+@media(max-width:360px) {
+
+    .hero h1 {
+        font-size: 1.8rem
+    }
+
+    .hero-ctas {
+        flex-direction: column;
+        align-items: stretch
+    }
+
+    .btn-primary,
+    .btn-outline {
+        text-align: center;
+        width: 100%
+    }
+
+    .canvas-wrap,
+    #cake3d-canvas {
+        height: 220px
+    }
+
+    .font-selector {
+        grid-template-columns: repeat(2, 1fr)
+    }
+
+    .otp-box {
+        width: 34px;
+        height: 40px;
+        font-size: 1rem
+    }
+
+    .pay-row2 {
+        flex-direction: column
+    }
 }

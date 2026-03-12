@@ -277,10 +277,53 @@
         <section class="cb-canvas-section">
             <div class="cb-canvas-wrap" id="cbCanvasWrap">
                 <canvas id="builder3d" tabindex="0"></canvas>
-                <div class="cb-canvas-hint">🖱 Drag to rotate • Scroll to zoom • Pinch on mobile</div>
+                <div class="cb-canvas-hint">👆 Drag to rotate · Pinch to zoom</div>
                 <div class="cb-snap-flash" id="snapFlash"></div>
                 <!-- Step badge -->
                 <div class="cb-step-badge" id="stepBadge">Step 1 of 5</div>
+
+                <!-- 🎨 FEATURE 4: Cake Mood Board (inside canvas wrap so it doesn't cover price bar) -->
+                <div class="mood-board" id="moodBoard">
+                    <div class="mood-board-title">🎨 Mood</div>
+                    <div class="mood-palettes" id="moodPalettes">
+                        <button class="mood-pal" onclick="applyMood('romance')" title="Romance">
+                            <span class="mood-swatches">
+                                <i style="background:#f48fb1"></i><i style="background:#e91e63"></i><i
+                                    style="background:#ce93d8"></i>
+                            </span>
+                        </button>
+                        <button class="mood-pal" onclick="applyMood('tropical')" title="Tropical">
+                            <span class="mood-swatches">
+                                <i style="background:#ffcc02"></i><i style="background:#ff7043"></i><i
+                                    style="background:#66bb6a"></i>
+                            </span>
+                        </button>
+                        <button class="mood-pal" onclick="applyMood('midnight')" title="Midnight">
+                            <span class="mood-swatches">
+                                <i style="background:#3949ab"></i><i style="background:#7c4dff"></i><i
+                                    style="background:#9c27b0"></i>
+                            </span>
+                        </button>
+                        <button class="mood-pal" onclick="applyMood('forest')" title="Forest">
+                            <span class="mood-swatches">
+                                <i style="background:#558b2f"></i><i style="background:#795548"></i><i
+                                    style="background:#a5d6a7"></i>
+                            </span>
+                        </button>
+                        <button class="mood-pal" onclick="applyMood('ocean')" title="Ocean">
+                            <span class="mood-swatches">
+                                <i style="background:#0288d1"></i><i style="background:#80deea"></i><i
+                                    style="background:#b2ebf2"></i>
+                            </span>
+                        </button>
+                        <button class="mood-pal" onclick="applyMood('golden')" title="Golden Hour">
+                            <span class="mood-swatches">
+                                <i style="background:#f9a825"></i><i style="background:#ff6f00"></i><i
+                                    style="background:#ffcc80"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
             <!-- Price + CTA bar -->
@@ -295,55 +338,6 @@
                     <button class="cb-addcart-btn" id="addCartBtn" onclick="addToCartAndRedirect()">
                         <span class="btn-icon">🛒</span>
                         Add to Cart
-                    </button>
-                </div>
-            </div>
-
-            <!-- 🎨 FEATURE 4: Cake Mood Board (Color Palette Inspiration) -->
-            <div class="mood-board" id="moodBoard">
-                <div class="mood-board-title">🎨 Mood Board</div>
-                <div class="mood-palettes" id="moodPalettes">
-                    <button class="mood-pal" onclick="applyMood('romance')" title="Romance">
-                        <span class="mood-swatches">
-                            <i style="background:#f48fb1"></i><i style="background:#e91e63"></i><i
-                                style="background:#ce93d8"></i>
-                        </span>
-                        <span class="mood-name">🌹 Romance</span>
-                    </button>
-                    <button class="mood-pal" onclick="applyMood('tropical')" title="Tropical">
-                        <span class="mood-swatches">
-                            <i style="background:#ffcc02"></i><i style="background:#ff7043"></i><i
-                                style="background:#66bb6a"></i>
-                        </span>
-                        <span class="mood-name">🌴 Tropical</span>
-                    </button>
-                    <button class="mood-pal" onclick="applyMood('midnight')" title="Midnight">
-                        <span class="mood-swatches">
-                            <i style="background:#3949ab"></i><i style="background:#7c4dff"></i><i
-                                style="background:#9c27b0"></i>
-                        </span>
-                        <span class="mood-name">🌌 Midnight</span>
-                    </button>
-                    <button class="mood-pal" onclick="applyMood('forest')" title="Forest">
-                        <span class="mood-swatches">
-                            <i style="background:#558b2f"></i><i style="background:#795548"></i><i
-                                style="background:#a5d6a7"></i>
-                        </span>
-                        <span class="mood-name">🌲 Forest</span>
-                    </button>
-                    <button class="mood-pal" onclick="applyMood('ocean')" title="Ocean">
-                        <span class="mood-swatches">
-                            <i style="background:#0288d1"></i><i style="background:#80deea"></i><i
-                                style="background:#b2ebf2"></i>
-                        </span>
-                        <span class="mood-name">🌊 Ocean</span>
-                    </button>
-                    <button class="mood-pal" onclick="applyMood('golden')" title="Golden Hour">
-                        <span class="mood-swatches">
-                            <i style="background:#f9a825"></i><i style="background:#ff6f00"></i><i
-                                style="background:#ffcc80"></i>
-                        </span>
-                        <span class="mood-name">✨ Golden</span>
                     </button>
                 </div>
             </div>

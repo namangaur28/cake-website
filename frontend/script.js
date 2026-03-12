@@ -787,7 +787,7 @@ function setupDrag(canvas) {
     canvas.addEventListener('mouseup', () => isDrag = false);
     canvas.addEventListener('mouseleave', () => isDrag = false);
     canvas.addEventListener('touchstart', e => { isDrag = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: true });
-    canvas.addEventListener('touchmove', e => { if (!isDrag) return; rotY += (e.touches[0].clientX - lastX) * 0.012; rotX += (e.touches[0].clientY - lastY) * 0.008; rotX = Math.max(-0.5, Math.min(0.6, rotX)); lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: true });
+    canvas.addEventListener('touchmove', e => { if (!isDrag) return; e.preventDefault(); rotY += (e.touches[0].clientX - lastX) * 0.012; rotX += (e.touches[0].clientY - lastY) * 0.008; rotX = Math.max(-0.5, Math.min(0.6, rotX)); lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; }, { passive: false });
     canvas.addEventListener('touchend', () => isDrag = false);
 }
 
@@ -945,7 +945,30 @@ function takeSnapshot() {
     flash.style.opacity = '0.8';
     setTimeout(() => flash.style.opacity = '0', 180);
     renderer.render(scene, camera);
-    const url = renderer.domElement.toDataURL('image/png');
+
+    // Create watermarked image
+    const src = renderer.domElement;
+    const c = document.createElement('canvas');
+    c.width = src.width; c.height = src.height;
+    const ctx = c.getContext('2d');
+    ctx.drawImage(src, 0, 0);
+
+    // Watermark — bottom-right corner
+    const fontSize = Math.max(14, Math.round(c.width * 0.028));
+    ctx.font = `600 ${fontSize}px 'Jost', 'Segoe UI', sans-serif`;
+    ctx.textAlign = 'right';
+    ctx.textBaseline = 'bottom';
+    ctx.shadowColor = 'rgba(0,0,0,0.6)';
+    ctx.shadowBlur = 6;
+    ctx.shadowOffsetX = 1;
+    ctx.shadowOffsetY = 1;
+    ctx.fillStyle = 'rgba(255,255,255,0.75)';
+    ctx.fillText('SilkOven', c.width - 16, c.height - 12);
+    ctx.font = `400 ${Math.round(fontSize * 0.6)}px 'Jost', 'Segoe UI', sans-serif`;
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.fillText('silkoven.in', c.width - 16, c.height - 12 + Math.round(fontSize * 0.7));
+
+    const url = c.toDataURL('image/png');
     const a = document.createElement('a');
     a.href = url; a.download = 'silkoven-cake.png'; a.click();
     addPoints(50, 'Downloaded cake design');

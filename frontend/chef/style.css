@@ -1,0 +1,357 @@
+:root {
+    --gold: #d4af37;
+    --dark: #0a0812;
+    --card: #151221;
+    --border: rgba(212, 175, 55, 0.15);
+    --text: #f0ece8;
+    --muted: #a09ba8;
+
+    /* Kanban Status Colors */
+    --pending: #e74c3c;
+    --prepping: #f39c12;
+    --baking: #e67e22;
+    --ready: #2ecc71;
+    --completed: #3498db;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--dark);
+    color: var(--text);
+    font-family: 'Jost', sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* board scrolls horizontally if needed */
+}
+
+/* ── HEADER ── */
+.chef-header {
+    background: #110d1a;
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.chef-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    object-fit: cover;
+}
+
+.chef-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    color: var(--gold);
+}
+
+.chef-header h1 em {
+    font-style: italic;
+    font-weight: 400;
+}
+
+.chef-header p {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+.pulse-dot {
+    width: 10px;
+    height: 10px;
+    background: #555;
+    border-radius: 50%;
+}
+
+.pulse-dot.online {
+    background: #2ecc71;
+    box-shadow: 0 0 8px #2ecc71;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+.refresh-btn {
+    background: rgba(212, 175, 55, 0.1);
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.refresh-btn:hover {
+    background: var(--gold);
+    color: var(--dark);
+}
+
+/* ── KANBAN BOARD ── */
+.kanban-board {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    overflow-x: auto;
+    overflow-y: hidden;
+    align-items: flex-start;
+}
+
+.kanban-col {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 320px;
+    min-width: 320px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Col Colors */
+#col-Pending .col-header {
+    border-top: 4px solid var(--pending);
+}
+
+#col-Prepping .col-header {
+    border-top: 4px solid var(--prepping);
+}
+
+#col-Baking .col-header {
+    border-top: 4px solid var(--baking);
+}
+
+#col-Ready .col-header {
+    border-top: 4px solid var(--ready);
+}
+
+#col-Completed .col-header {
+    border-top: 4px solid var(--completed);
+}
+
+.col-header {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px 12px 0 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.col-header h3 {
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.col-count {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.col-body {
+    padding: 1rem;
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* ── ORDER CARD ── */
+.order-card {
+    background: #1e1a2f;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-card:hover {
+    border-color: rgba(212, 175, 55, 0.4);
+}
+
+.card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.ord-id {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    background: rgba(212, 175, 55, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.ord-time {
+    font-size: 0.75rem;
+    color: var(--muted);
+}
+
+.ord-items {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.ord-items ul {
+    list-style: none;
+    margin-top: 0.4rem;
+}
+
+.ord-items li {
+    position: relative;
+    padding-left: 14px;
+    margin-bottom: 0.3rem;
+    color: #e0e0e0;
+}
+
+.ord-items li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+}
+
+.ord-badge {
+    display: inline-block;
+    background: #392b4d;
+    color: #ce93d8;
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+.ord-instr {
+    background: rgba(231, 76, 60, 0.1);
+    border-left: 3px solid #e74c3c;
+    padding: 0.6rem;
+    font-size: 0.8rem;
+    color: #ffb8b1;
+    margin-bottom: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    color: #fff;
+    padding: 0.6rem;
+    border-radius: 6px;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.action-btn.primary {
+    background: var(--gold);
+    color: var(--dark);
+}
+
+.action-btn.primary:hover {
+    background: #e6c24d;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .kanban-board {
+        flex-direction: column;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .kanban-col {
+        width: 100%;
+        min-width: unset;
+        max-height: unset;
+    }
+
+    .col-body {
+        max-height: 400px;
+    }
+}
