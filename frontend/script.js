@@ -400,7 +400,10 @@ function completeOrder(orderId) {
     // Explicitly show the ID and tell user to save it
     document.getElementById('pm-conf-id').innerHTML = `
         <span style="font-size:0.9rem; color:var(--muted); display:block; margin-bottom:0.4rem;">Save this Order ID:</span>
-        <span style="font-size:1.6rem; color:var(--gold); font-weight:700; user-select:all; background:rgba(212,175,55,0.1); padding:4px 12px; border-radius:6px;">${orderId}</span>
+        <div style="display:inline-flex; align-items:center; background:rgba(212,175,55,0.1); border-radius:6px; padding:4px 4px 4px 12px;">
+            <span style="font-size:1.6rem; color:var(--gold); font-weight:700; user-select:all; margin-right:8px;" id="finalOrderId">${orderId}</span>
+            <button onclick="navigator.clipboard.writeText('${orderId}'); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 2000);" style="background:var(--gold); color:#fff; border:none; padding:6px 10px; border-radius:4px; font-size:0.75rem; font-weight:600; cursor:pointer; font-family:'Jost',sans-serif; transition:background 0.2s;">Copy</button>
+        </div>
     `;
 
     addPoints(150, 'Placed an order!');
@@ -504,6 +507,11 @@ function verifyOTP() {
     document.getElementById('otpError').textContent = '';
     clearInterval(otpTimer);
     loggedIn = true;
+
+    // SAVE USER DETALS to LocalStorage for My Orders API
+    localStorage.setItem('sk_loggedIn', 'true');
+    localStorage.setItem('sk_user', JSON.stringify({ phone: currentPhone }));
+
     document.getElementById('authStep2').classList.add('hidden');
     document.getElementById('authStep3').classList.remove('hidden');
     document.getElementById('authWelcome').textContent = 'Welcome back! Signed in as ' + currentPhone;
@@ -512,6 +520,12 @@ function verifyOTP() {
     // Show tracker if open
     document.getElementById('trackerAuthGate').classList.add('hidden');
     document.getElementById('trackerContent').classList.remove('hidden');
+
+    // Update navbar pill
+    document.getElementById('navLoginBtn').classList.add('hidden');
+    const pill = document.getElementById('navUserPill');
+    pill.classList.remove('hidden');
+    document.getElementById('navUserName').textContent = currentPhone;
 }
 
 function backToPhone() {
