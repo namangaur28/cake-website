@@ -520,11 +520,14 @@
             <input type="hidden" id="pm-addr" />
 
             <!-- Success screen -->
-            <div id="pm-success" class="pay-success hidden">
+            <div id="pm-success" class="pay-success hidden" style="text-align: center;">
                 <div class="pay-success-ico">✓</div>
                 <h3>Payment Successful!</h3>
                 <p>Your order has been placed and will be baked fresh.</p>
-                <div class="pay-order-id">Order ID: <strong id="pm-conf-id"></strong></div>
+                <div class="pay-order-id" id="pm-conf-id"></div>
+                <button onclick="closeSuccessManual()"
+                    style="margin-top:20px; background:var(--gold); color:#fff; border:none; border-radius:30px; padding:10px 24px; font-weight:600; font-size:1rem; cursor:pointer;"
+                    onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Done</button>
             </div>
         </div>
     </div>

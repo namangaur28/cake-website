@@ -414,15 +414,25 @@ function completeOrder(orderId) {
     renderShop(); renderCart();
 
     document.getElementById('orderId').textContent = orderId;
-    setTimeout(() => {
-        closePayModal();
-        const t = document.getElementById('orderToast');
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 5000);
-    }, 2200);
+
+    // Save most recent order ID locally to recommend in tracking
+    localStorage.setItem('sk_last_order', orderId);
+
+    const t = document.getElementById('orderToast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 5000);
+
+    // Auto-close removed so they can copy the ID.
     fireConfetti();
 }
 
+function closeSuccessManual() {
+    closePayModal();
+    // Reset form UI for next time
+    document.getElementById('pm-success').classList.add('hidden');
+    document.getElementById('pm-form').classList.remove('hidden');
+    document.getElementById('pm-hint').classList.remove('hidden');
+}
 
 
 /* ── CONTACT FORM ── */
@@ -572,6 +582,13 @@ function openTracker() {
         document.getElementById('trackerAuthGate').classList.add('hidden');
         document.getElementById('trackerContent').classList.remove('hidden');
     }
+
+    // Auto-suggest recent order if we have it locally
+    const lastOrder = localStorage.getItem('sk_last_order');
+    if (lastOrder && !document.getElementById('trackInput').value) {
+        document.getElementById('trackInput').value = lastOrder;
+    }
+
     openOverlay('trackerOverlay');
 }
 function closeTracker() { closeOverlay('trackerOverlay'); }
