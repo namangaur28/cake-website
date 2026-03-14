@@ -706,7 +706,7 @@ async function fetchMyOrders() {
     }
 
     try {
-        const res = await fetch(`https://cake-website-ofys.onrender.com/api/orders/user/${phoneToFetch}`);
+        const res = await fetch(`${SERVER}/orders/user/${phoneToFetch}`);
         const data = await res.json();
 
         if (!data.success || !data.orders || data.orders.length === 0) {
