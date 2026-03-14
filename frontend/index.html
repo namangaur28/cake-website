@@ -442,9 +442,11 @@
         </div>
         <div class="drw-body" id="cartItems"></div>
         <div class="address-box">
-            <div class="addr-lbl">Delivery Address</div>
+            <div class="addr-lbl">Delivery Details</div>
+            <input type="tel" id="cartPhone" placeholder="Your Phone Number (e.g. 9999999999)" oninput="saveAddress()"
+                style="width: 100%; border: 1.5px solid var(--border); border-radius: 6px; padding: 0.8rem; margin-bottom: 0.8rem; font-family: var(--font-main); font-size: 0.85rem;" />
             <textarea id="cartAddress" placeholder="Enter your full address..." oninput="saveAddress()"></textarea>
-            <div id="addrError" class="addr-err hidden">Please enter a valid address to proceed.</div>
+            <div id="addrError" class="addr-err hidden">Please enter a valid phone number and address to proceed.</div>
         </div>
         <div class="cart-foot">
             <div class="cart-total-row"><span>Total</span><strong id="cartTotal">Rs.0</strong></div>

@@ -378,9 +378,12 @@ async function submitPayment() {
     await new Promise(r => setTimeout(r, 1600));
 
     try {
+        const guestPhone = localStorage.getItem('sk_guest_phone') || '';
+        const userPhoneToLink = currentPhone || guestPhone;
+
         const res = await fetch(SERVER + '/payment/verify', {
             method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ orderId: oId, cartItems: cart, address: addr, demoCard: card.slice(-4), userPhone: currentPhone }),
+            body: JSON.stringify({ orderId: oId, cartItems: cart, address: addr, demoCard: card.slice(-4), userPhone: userPhoneToLink }),
         });
         const data = await res.json();
         completeOrder(data.orderId || oId);
@@ -456,11 +459,18 @@ async function sendContactMsg() {
 /* ── AUTH ── */
 let loggedIn = false, currentPhone = '', otpTimer;
 function saveAddress() {
-    const val = document.getElementById('cartAddress').value;
-    localStorage.setItem('sk_addr', val);
-    if (val.length >= 5) {
+    const addr = document.getElementById('cartAddress').value.trim();
+    const phoneInfo = document.getElementById('cartPhone').value.trim();
+    localStorage.setItem('sk_addr', addr);
+    localStorage.setItem('sk_guest_phone', phoneInfo);
+
+    if (addr.length >= 5 && phoneInfo.length >= 8) {
         document.getElementById('addrError').classList.add('hidden');
         document.getElementById('cartAddress').style.borderColor = 'var(--border)';
+        document.getElementById('cartPhone').style.borderColor = 'var(--border)';
+        if (cart.length > 0) document.getElementById('orderBtn').disabled = false;
+    } else {
+        document.getElementById('orderBtn').disabled = true;
     }
 }
 
@@ -687,10 +697,11 @@ async function fetchMyOrders() {
     ob.innerHTML = '<div style="text-align:center; padding: 2rem;">Loading your orders...</div>';
 
     const storedUser = JSON.parse(localStorage.getItem('sk_user') || '{}');
-    const phoneToFetch = storedUser.phone || currentPhone;
+    const guestPhone = localStorage.getItem('sk_guest_phone') || '';
+    const phoneToFetch = storedUser.phone || currentPhone || guestPhone;
 
     if (!phoneToFetch) {
-        ob.innerHTML = '<div style="text-align:center; padding: 2rem;">Please sign in first to see your orders.</div>';
+        ob.innerHTML = '<div style="text-align:center; padding: 2rem;">Please sign in or place an order first to see your history.</div>';
         return;
     }
 

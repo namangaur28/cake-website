@@ -244,7 +244,14 @@ app.get('/api/orders', async (req, res) => {
 
 /* GET /api/orders/user/:phone — get all orders for a specific user */
 app.get('/api/orders/user/:phone', async (req, res) => {
-    const orders = await Order.find({ userPhone: req.params.phone }).sort({ paidAt: -1 });
+    let phone = req.params.phone;
+    // Strip everything except digits
+    phone = phone.replace(/\D/g, '');
+    // Take the last 10 digits to ignore country codes (+91, 0, etc.)
+    if (phone.length > 10) phone = phone.slice(-10);
+
+    // Find any order whose userPhone contains this core number
+    const orders = await Order.find({ userPhone: new RegExp(phone, 'i') }).sort({ paidAt: -1 });
     return res.json({ success: true, count: orders.length, orders });
 });
 
