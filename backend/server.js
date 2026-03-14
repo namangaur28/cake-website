@@ -15,6 +15,15 @@ const { v4: uuidv4 } = require('uuid');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+/* ── Force HTTPS in Production (Render) ── */
+app.use((req, res, next) => {
+    // Render sends x-forwarded-proto header
+    if (req.headers['x-forwarded-proto'] && req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect(`https://${req.hostname}${req.url}`);
+    }
+    next();
+});
+
 /* ── Config ── */
 const JWT_SECRET = process.env.JWT_SECRET || 'silkoven_jwt_secret_demo_2024';
 const MONGO_URI = process.env.MONGO_URI;
