@@ -4,43 +4,39 @@
 
 /* ── VARIABLES ── */
 :root {
-    --rose: #8B1E2D;
-    --bark: #4A2C2A;
-    --gold: #D4AF37;
-    --cream: #FFF5E9;
-    --blush: #F6C6C6;
-    --green: #4a7c59;
-    --bg: #FFF5E9;
-    --bg2: #f5ead8;
-    --bg3: #eedcc8;
-    --card-bg: #ffffff;
-    --card-shadow: rgba(74, 44, 42, .08);
-    --text: #4A2C2A;
-    --dark: #2a1815;
-    --muted: #7a5e5c;
-    --border: #e8d4c0;
+    --rose: #c0392b;
+    --bark: #6b3d2e;
+    --gold: #b5883a;
+    --cream: #fdf7f0;
+    --blush: #f0d5c8;
+    --green: #2e7d32;
+    --bg: #fdf7f0;
+    --bg2: #f5ece0;
+    --bg3: #ede0cf;
+    --card-bg: #fff;
+    --card-shadow: rgba(107, 61, 46, .10);
+    --text: #3a2218;
+    --dark: #1a100a;
+    --muted: #8d6e5a;
+    --border: #e8d5c0;
     --tr: .3s;
-    --accent: #D4AF37;
-    --accent2: #8B1E2D;
 }
 
 [data-theme="dark"] {
-    --rose: #c9505f;
-    --bark: #f0ddd0;
-    --gold: #D4AF37;
-    --bg: #0d0808;
-    --bg2: #1a1210;
-    --bg3: #241a16;
-    --card-bg: #1a1210;
-    --card-shadow: rgba(0, 0, 0, 0.6);
-    --text: #f5ede5;
-    --dark: #ffffff;
-    --muted: #a09088;
-    --border: #2e2220;
-    --cream: #0d0808;
-    --blush: #241a16;
-    --accent: #D4AF37;
-    --accent2: #c9505f;
+    --bg: #121212;
+    --bg2: #1E1E1E;
+    /* Standard Surface */
+    --bg3: #2C2C2C;
+    --card-bg: #1E1E1E;
+    --card-shadow: rgba(0, 0, 0, 0.5);
+    --text: #E0E0E0;
+    /* High Contrast */
+    --dark: #FFFFFF;
+    --muted: #B0B0B0;
+    --border: #333333;
+    --cream: #121212;
+    /* Remap cream to dark bg for consistency */
+    --blush: #2C2C2C;
 }
 
 /* ── RESET ── */
@@ -189,15 +185,15 @@ ul {
     align-items: center;
     gap: 1.5rem;
     padding: .8rem 2rem;
-    background: rgba(255, 245, 233, .92);
-    backdrop-filter: blur(18px);
+    background: rgba(253, 247, 240, .88);
+    backdrop-filter: blur(14px);
     border-bottom: 1px solid var(--border);
     transition: background var(--tr)
 }
 
 [data-theme="dark"] #navbar {
-    background: rgba(10, 10, 10, 0.95);
-    border-bottom: 1px solid #1e1e1e;
+    background: rgba(18, 18, 18, 0.92);
+    border-bottom: 1px solid #333;
 }
 
 .nav-logo {
@@ -324,22 +320,22 @@ ul {
 .nav-login-btn {
     display: inline-flex;
     align-items: center;
-    background: linear-gradient(135deg, var(--gold), #b89530);
+    background: linear-gradient(135deg, var(--bark), var(--rose));
     color: #fff !important;
     border-radius: 20px;
     padding: .32rem 1rem;
     font-size: .78rem;
     font-weight: 600;
-    letter-spacing: .5px;
+    letter-spacing: .3px;
     text-transform: uppercase;
     transition: all .22s;
     white-space: nowrap;
-    box-shadow: 0 2px 12px rgba(212, 175, 55, .25);
+    box-shadow: 0 2px 10px rgba(192, 57, 43, .2);
 }
 
 .nav-login-btn:hover {
     transform: translateY(-1px);
-    box-shadow: 0 5px 20px rgba(212, 175, 55, .4);
+    box-shadow: 0 5px 18px rgba(192, 57, 43, .35);
     opacity: .92;
 }
 
@@ -639,12 +635,11 @@ ul {
 }
 
 .score-card {
-    background: linear-gradient(135deg, #4A2C2A, #8B1E2D);
+    background: linear-gradient(135deg, var(--bark), var(--rose));
     border-radius: 18px;
     padding: 1.6rem;
     text-align: center;
-    color: #fff;
-    border: 1px solid rgba(212, 175, 55, .2)
+    color: #fff
 }
 
 .sc-pts {
@@ -833,47 +828,45 @@ ul {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--gold), #b89530);
-    color: #fff;
+    background: var(--bark);
+    color: var(--cream);
     border: none;
     border-radius: 30px;
     padding: .85rem 2.2rem;
     font-family: 'Jost', sans-serif;
     font-size: .82rem;
-    font-weight: 700;
-    letter-spacing: 1.5px;
+    font-weight: 600;
+    letter-spacing: 1px;
     text-transform: uppercase;
     transition: all .25s;
-    cursor: pointer;
-    box-shadow: 0 4px 18px rgba(212, 175, 55, .3)
+    cursor: pointer
 }
 
 .btn-primary:hover {
+    background: var(--rose);
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(212, 175, 55, .45);
-    background: linear-gradient(135deg, #e0c040, #b08e4a)
+    box-shadow: 0 8px 24px rgba(192, 57, 43, .3)
 }
 
 .btn-outline {
     background: transparent;
-    color: var(--dark);
-    border: 1.5px solid var(--gold);
+    color: var(--bark);
+    border: 1.5px solid var(--bark);
     border-radius: 30px;
     padding: .83rem 2rem;
     font-family: 'Jost', sans-serif;
     font-size: .82rem;
     font-weight: 600;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
     text-transform: uppercase;
     transition: all .25s;
     cursor: pointer
 }
 
 .btn-outline:hover {
-    background: var(--gold);
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(212, 175, 55, .3)
+    background: var(--bark);
+    color: var(--cream);
+    transform: translateY(-2px)
 }
 
 .hero-stats {
@@ -931,7 +924,7 @@ ul {
     position: absolute;
     width: 340px;
     height: 340px;
-    background: radial-gradient(circle, rgba(212, 175, 55, .15), transparent 70%);
+    background: radial-gradient(circle, rgba(192, 57, 43, .18), transparent 70%);
     border-radius: 50%;
     pointer-events: none
 }
@@ -1001,18 +994,16 @@ ul {
     font-weight: 600;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--gold);
+    color: var(--muted);
     background: var(--bg2);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border)
 }
 
 .section-divider.dark {
-    background: #4A2C2A;
-    color: rgba(212, 175, 55, .85);
-    border: none;
-    border-top: 1px solid rgba(212, 175, 55, .15);
-    border-bottom: 1px solid rgba(212, 175, 55, .15)
+    background: var(--bark);
+    color: rgba(253, 247, 240, .7);
+    border: none
 }
 
 /* ── SECTION HEADERS ── */
@@ -1355,31 +1346,29 @@ ul {
 }
 
 .add-btn {
-    background: linear-gradient(135deg, var(--gold), #b89530);
-    border: none;
-    color: #fff;
-    padding: .5rem 1.2rem;
+    background: var(--bg);
+    border: 1.5px solid var(--blush);
+    color: var(--bark);
+    padding: .46rem 1.1rem;
     border-radius: 30px;
     cursor: pointer;
     font-family: 'Jost', sans-serif;
     font-size: .75rem;
-    font-weight: 700;
-    letter-spacing: .3px;
-    transition: all .25s;
-    white-space: nowrap;
-    box-shadow: 0 2px 10px rgba(212, 175, 55, .25)
+    font-weight: 600;
+    transition: all .2s;
+    white-space: nowrap
 }
 
 .add-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px rgba(212, 175, 55, .4);
-    background: linear-gradient(135deg, #e0c040, #b08e4a)
+    background: var(--bark);
+    color: var(--cream);
+    border-color: var(--bark)
 }
 
 .add-btn.added {
     background: var(--green);
     color: #fff;
-    box-shadow: 0 2px 10px rgba(74, 124, 89, .3)
+    border-color: var(--green)
 }
 
 /* ── FEATURES STRIP ── */
@@ -1488,25 +1477,24 @@ ul {
 }
 
 .open-builder-btn {
-    background: linear-gradient(135deg, var(--gold), #b89530);
-    color: #fff;
+    background: #fff;
+    color: var(--bark);
     border: none;
     border-radius: 30px;
     padding: .95rem 2.5rem;
     font-family: 'Jost', sans-serif;
     font-size: .88rem;
     font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    letter-spacing: .5px;
     cursor: pointer;
     transition: all .25s;
-    box-shadow: 0 6px 24px rgba(212, 175, 55, .3)
+    box-shadow: 0 6px 24px rgba(0, 0, 0, .2)
 }
 
 .open-builder-btn:hover {
+    background: var(--cream);
     transform: translateY(-3px);
-    box-shadow: 0 12px 36px rgba(212, 175, 55, .45);
-    background: linear-gradient(135deg, #e0c040, #b08e4a)
+    box-shadow: 0 12px 36px rgba(0, 0, 0, .25)
 }
 
 /* ── ABOUT ── */
@@ -2742,26 +2730,22 @@ footer {
 }
 
 .add-cart-btn {
-    background: linear-gradient(135deg, var(--gold), #b89530);
+    background: var(--bark);
     color: #fff;
     border: none;
     border-radius: 12px;
     padding: .8rem;
     font-family: 'Jost', sans-serif;
     font-size: .82rem;
-    font-weight: 700;
-    letter-spacing: .5px;
-    text-transform: uppercase;
+    font-weight: 600;
     cursor: pointer;
-    transition: all .25s;
-    width: 100%;
-    box-shadow: 0 4px 18px rgba(212, 175, 55, .3)
+    transition: all .2s;
+    width: 100%
 }
 
 .add-cart-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 28px rgba(212, 175, 55, .45);
-    background: linear-gradient(135deg, #e0c040, #b08e4a)
+    background: var(--rose);
+    transform: translateY(-1px)
 }
 
 .dl-btn {
