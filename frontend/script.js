@@ -403,7 +403,7 @@ function completeOrder(orderId) {
     // Explicitly show the ID and tell user to save it
     document.getElementById('pm-conf-id').innerHTML = `
         <span style="font-size:0.9rem; color:var(--muted); display:block; margin-bottom:0.4rem;">Save this Order ID:</span>
-        <div style="display:inline-flex; align-items:center; background:rgba(212,175,55,0.1); border-radius:6px; padding:4px 4px 4px 12px;">
+        <div style="display:inline-flex; align-items:center; background:rgba(181,136,58,0.1); border-radius:6px; padding:4px 4px 4px 12px;">
             <span style="font-size:1.6rem; color:var(--gold); font-weight:700; user-select:all; margin-right:8px;" id="finalOrderId">${orderId}</span>
             <button onclick="navigator.clipboard.writeText('${orderId}'); this.textContent='Copied!'; setTimeout(()=>this.textContent='Copy', 2000);" style="background:var(--gold); color:#fff; border:none; padding:6px 10px; border-radius:4px; font-size:0.75rem; font-weight:600; cursor:pointer; font-family:'Jost',sans-serif; transition:background 0.2s;">Copy</button>
         </div>
@@ -739,7 +739,7 @@ async function fetchMyOrders() {
                         <ul style="list-style:none; padding-left:0; line-height:1.6; color:#555;">${itemsPreview}</ul>
                     </div>
                     <div style="display:flex; justify-content:space-between; align-items:center; border-top: 1px solid #f0f0f0; padding-top: 1rem;">
-                        <div style="font-size:0.85rem; padding: 4px 10px; border-radius: 20px; background: rgba(212, 175, 55, 0.1); color: #b5883a; font-weight:600;">Status: ${status}</div>
+                        <div style="font-size:0.85rem; padding: 4px 10px; border-radius: 20px; background: rgba(181, 136, 58, 0.1); color: #b5883a; font-weight:600;">Status: ${status}</div>
                         <button onclick="closeMyOrders(); document.getElementById('trackInput').value='${o.orderId}'; openTracker(); trackOrder();" style="background:#1a0e0a; color:#fff; border:none; padding:8px 16px; border-radius:6px; font-size:0.8rem; font-weight:600; cursor:pointer; font-family:'Jost',sans-serif; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'">Track Live</button>
                     </div>
                 </div>

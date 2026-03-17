@@ -4,27 +4,27 @@
 
 /* ── CSS Variables ── */
 :root {
-    --bg: #FFF5E9;
+    --bg: #fdf7f0;
     --surface: #ffffff;
-    --surface2: #f5ead8;
-    --border: #e8d4c0;
-    --text: #4A2C2A;
-    --text2: #6a4845;
-    --text3: #7a5e5c;
-    --rose: #8B1E2D;
-    --rose-light: #F6C6C6;
-    --gold: #D4AF37;
-    --gold-light: #e0c040;
+    --surface2: #f5ece0;
+    --border: #e8d5c0;
+    --text: #3a2218;
+    --text2: #6b3d2e;
+    --text3: #8d6e5a;
+    --rose: #c0392b;
+    --rose-light: #f0d5c8;
+    --gold: #b5883a;
+    --gold-light: #d4a882;
     --purple: #6b3d8a;
     --teal: #1a8a7e;
-    --step-active: #D4AF37;
+    --step-active: #b5883a;
     --step-done: #4a7c59;
     --step-future: #e0d4c4;
     --nav-h: 60px;
     --price-bar-h: 80px;
     --sidebar-w: 440px;
-    --shadow: 0 4px 24px rgba(74, 44, 42, .10);
-    --shadow-lg: 0 12px 48px rgba(74, 44, 42, .16);
+    --shadow: 0 4px 24px rgba(107, 61, 46, .10);
+    --shadow-lg: 0 12px 48px rgba(107, 61, 46, .16);
     --radius: 14px;
     --radius-sm: 8px;
     --transition: .18s cubic-bezier(.4, 0, .2, 1);
